@@ -108,7 +108,7 @@ export default function SkillsSection() {
   return (
     <section
       id="skills"
-      className="relative py-24 overflow-hidden"
+      className="relative py-10 overflow-hidden"
       aria-labelledby="skills-heading"
     >
       {/* Subtle background grid */}
@@ -120,12 +120,12 @@ export default function SkillsSection() {
       {/* Bottom radial glow */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-[#62a92b]/[0.03] dark:bg-[#62a92b]/[0.04] blur-3xl"
+        className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full bg-[#62a92b]/[0.03] dark:bg-[#62a92b]/[0.04] blur-3xl"
       />
 
       <div className="relative z-10">
         {/* ── Heading ─────────────────────────────────────────────────────── */}
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center mb-14">
+        {/* <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center mb-14">
           <SectionLabel />
           <h2
             id="skills-heading"
@@ -138,7 +138,7 @@ export default function SkillsSection() {
             The tools and technologies I reach for to build fast, accessible, and
             maintainable products. Hover to pause.
           </p>
-        </div>
+        </div> */}
 
         {/* ── Marquee Rows ────────────────────────────────────────────────── */}
         <div className="flex flex-col gap-5 py-4">
@@ -155,7 +155,7 @@ export default function SkillsSection() {
         </div>
 
         {/* ── Stats strip ─────────────────────────────────────────────────── */}
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+        {/* <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-14">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
               { value: '2+',  label: 'Years Experience' },
@@ -176,7 +176,7 @@ export default function SkillsSection() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

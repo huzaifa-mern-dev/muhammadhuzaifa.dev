@@ -15,6 +15,7 @@ import ResumeSection    from "@/components/sections/ResumeSection";
 import PortfolioSection from "@/components/sections/PortfolioSection";
 import SkillsSection    from "@/components/sections/SkillsSection";
 import ContactSection   from "@/components/sections/ContactSection";
+import TestimonialsSection from "@/components/sections/TestimonialsSection";
 
 // ── Phase 5+: Hero animations + typewriter ───────────────────────────────
 import HeroSection from "@/components/sections/HeroSection";
@@ -28,6 +29,9 @@ export default function HomePage() {
       {/* ─── Hero / About ─────────────────────────────────────────── */}
       <HeroSection />
 
+       {/* ─── Skills (Server Component — CSS Marquee) ──────────────── */}
+      <SkillsSection />
+
       {/* ─── Services (Server Component) ───────────────────────────── */}
       <ServicesSection />
 
@@ -37,8 +41,8 @@ export default function HomePage() {
       {/* ─── Portfolio (Client Component — Swiper + Lightbox) ─────── */}
       <PortfolioSection />
 
-      {/* ─── Skills (Server Component — CSS Marquee) ──────────────── */}
-      <SkillsSection />
+      {/* ─── Testimonials "Wall of Love" (Client Component) ───────── */}
+      <TestimonialsSection />
 
       {/* ─── Contact (Client Component — Server Action) ───────────── */}
       <ContactSection />
