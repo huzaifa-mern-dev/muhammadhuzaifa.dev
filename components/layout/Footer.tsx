@@ -24,17 +24,17 @@ const SOCIAL_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="relative bg-gray-50 dark:bg-[#1a1a24] pt-32 pb-10 px-6 md:px-12 overflow-hidden">
+    <footer className="relative bg-gray-50 dark:bg-[#1a1a24] pt-32 pb-24 md:pb-10 px-6 md:px-12 overflow-hidden">
       
       {/* ── 1. The Marquee / Oversized Typography ── */}
       <div className="w-full text-center relative z-0">
-        <h2 className="text-[12vw] md:text-[8vw] font-black font-sans tracking-tighter leading-none opacity-5 dark:opacity-10 text-gray-900 dark:text-white select-none whitespace-nowrap">
-          LET'S BUILD ALONG.
+        <h2 className="text-[16vw] md:text-[8vw] font-black font-sans tracking-tighter leading-[0.85] md:leading-none opacity-5 dark:opacity-10 text-gray-900 dark:text-white select-none">
+          LET'S BUILD<br className="md:hidden" /> ALONG.
         </h2>
       </div>
 
       {/* ── 2. Minimalist Content Grid ── */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mt-12 md:-mt-8 relative z-10 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-12 mt-16 md:-mt-8 relative z-10 max-w-7xl mx-auto">
         
         {/* Left Column (Span 5): Brand & Mission */}
         <div className="md:col-span-5 flex flex-col gap-6">

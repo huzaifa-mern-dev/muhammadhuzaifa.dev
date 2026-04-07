@@ -18,7 +18,7 @@ const NAV_LINKS = [
   { href: "/#services",  label: "Services",   icon: "ri-service-line" },
   { href: "/#resume",    label: "Resume",     icon: "ri-file-text-line" },
   { href: "/#portfolio", label: "Portfolio",  icon: "ri-layout-masonry-line" },
-  { href: "/#skills",    label: "Skills",     icon: "ri-code-s-slash-line" },
+  { href: "/#testimonials", label: "Testimonials", icon: "ri-message-2-line" },
   { href: "/#contact",   label: "Contact",    icon: "ri-send-plane-line" },
 ] as const;
 
