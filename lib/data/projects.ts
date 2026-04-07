@@ -8,9 +8,12 @@ export interface Project {
   id: string;
   title: string;
   subtitle?: string;
-  description: string;
+  description: string; // short description
+  fullDescription?: string; // used for the new interactive modal
+  features?: string[]; // used for the new interactive modal
   technologies: string[];
-  image: string; // Path relative to /public — e.g. "/imgs/home-page-2/projects/1.png"
+  image: string; // cover image path
+  images?: string[]; // carousel images path
   liveUrl?: string;
   githubUrl?: string;
 }
@@ -21,18 +24,23 @@ export const projects: Project[] = [
     title: "Task Management",
     subtitle: "System",
     description: "MERN Stack Task Management System",
+    fullDescription: "A robust, scalable backend architecture for an enterprise task management system. Designed to handle real-time concurrency, complex state management, and role-based access control.",
+    features: ["Real-time Socket.io Syncing", "Role-Based Access Control (RBAC)", "Advanced MongoDB Aggregations", "Secure JWT Authentication"],
     technologies: ["React.js", "Express.js", "MongoDB", "Node.js"],
     image: "/imgs/home-page-2/projects/4.png",
+    images: ["/imgs/home-page-2/projects/4.png", "/imgs/home-page-2/projects/3.png"],
     githubUrl: "https://github.com/huzaifa-mern-dev/mern-stack-task-manager",
   },
   {
     id: "sniplit",
     title: "SnipLit",
     subtitle: "CodeScreenshot",
-    description:
-      "CodeScreenshot — a powerful tool to create stunning screenshots of your code with customisable font options.",
+    description: "CodeScreenshot — a powerful tool to create stunning screenshots of your code with customisable font options.",
+    fullDescription: "SnipLit is a highly interactive React application allowing developers to generate beautiful, shareable snippets of code with syntax highlighting themes and custom typography.",
+    features: ["Custom Zustand State Engine", "Live Syntax Highlighting", "Dynamic Font Loading", "Export to High-Res PNG"],
     technologies: ["React", "Zustand", "Tailwind CSS"],
     image: "/imgs/home-page-2/projects/3.png",
+    images: ["/imgs/home-page-2/projects/3.png", "/imgs/home-page-2/projects/4.png"],
     liveUrl: "https://sniplit-code.netlify.app/",
     githubUrl: "https://github.com/huzaifa-mern-dev/SnipLit",
   },
@@ -40,10 +48,12 @@ export const projects: Project[] = [
     id: "gta6",
     title: "Modern and Animated",
     subtitle: "GTA 6 Landing Page",
-    description:
-      "GTA 6 Theta — immersive dynamic landing page inspired by the cinematic world of Grand Theft Auto. Advanced animations, interactive UI, and modern design.",
+    description: "GTA 6 Theta — immersive dynamic landing page inspired by the cinematic world of Grand Theft Auto.",
+    fullDescription: "An ambitious, highly animated landing page utilizing GSAP ScrollTrigger to recreate the immersive, high-fidelity experience of a AAA game studio release.",
+    features: ["GSAP ScrollTrigger Pinned Sections", "Custom Parallax Mouse Tracking", "Responsive CSS Grid Architecture"],
     technologies: ["React", "GSAP", "Tailwind CSS"],
     image: "/imgs/home-page-2/projects/8.png",
+    images: ["/imgs/home-page-2/projects/8.png", "/imgs/home-page-2/projects/5.png"],
     liveUrl: "https://gta-6-theta.vercel.app/",
     githubUrl: "https://github.com/huzaifa-mern-dev/GTA-6-Landing-Page/",
   },
@@ -51,10 +61,12 @@ export const projects: Project[] = [
     id: "lynk",
     title: "Lynk — Your Next-Gen",
     subtitle: "URL Shortener",
-    description:
-      "Lynk — a powerful URL shortening service designed for simplicity, efficiency, and detailed insights.",
+    description: "Lynk — a powerful URL shortening service designed for simplicity, efficiency, and detailed insights.",
+    fullDescription: "Built on Next.js 14 App Router, Lynk provides an incredibly fast, edge-rendered dashboard to generate, track, and manage shortened URLs with sophisticated analytics.",
+    features: ["Next.js Server Actions & SSR", "High-Performance API Routes", "MongoDB Click-Tracking Analytics", "Dynamic Tailwind Theming"],
     technologies: ["Next.js", "Tailwind CSS", "MongoDB"],
     image: "/imgs/home-page-2/projects/5.png",
+    images: ["/imgs/home-page-2/projects/5.png", "/imgs/home-page-2/projects/3.png"],
     liveUrl: "https://lynk-next.vercel.app/",
     githubUrl: "https://github.com/huzaifa-mern-dev/Lynk-URL-Shortner",
   },

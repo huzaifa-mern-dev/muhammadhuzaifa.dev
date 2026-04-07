@@ -45,23 +45,22 @@ const playfairDisplay = Playfair_Display({
 });
 
 // ─── Local Font (Satoshi) ────────────────────────────────────────────────────
-// Font files are at: public/fonts/satoshi/fonts/Satoshi-Variable.woff2
-// (copied from assets/fonts/satoshi/fonts/ in the original project)
 const satoshi = localFont({
   src: [
     {
-      path: "../public/fonts/satoshi/fonts/Satoshi-Variable.woff2",
-      weight: "100 900",
+      path: "./fonts/Satoshi-Variable.woff2",
+      weight: "300 900",
       style: "normal",
     },
     {
-      path: "../public/fonts/satoshi/fonts/Satoshi-VariableItalic.woff2",
-      weight: "100 900",
+      path: "./fonts/Satoshi-VariableItalic.woff2",
+      weight: "300 900",
       style: "italic",
     },
   ],
   variable: "--font-satoshi",
   display: "swap",
+  preload: true,
 });
 
 // ─── Metadata ────────────────────────────────────────────────────────────────
@@ -142,7 +141,6 @@ export default function RootLayout({
         inter.variable,
         dmMono.variable,
         playfairDisplay.variable,
-        satoshi.variable,
       ].join(" ")}
     >
       {/*
@@ -151,7 +149,7 @@ export default function RootLayout({
         This is the recommended pattern for next-themes.
       */}
       <body
-        className="font-sans antialiased bg-gray-50 dark:bg-[#272730] text-gray-900 dark:text-white"
+        className={`${satoshi.variable} font-sans antialiased bg-gray-50 dark:bg-[#272730] text-gray-900 dark:text-white`}
         suppressHydrationWarning
       >
         {/*

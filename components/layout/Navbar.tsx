@@ -1,20 +1,14 @@
 "use client";
 
 /**
- * components/layout/Navbar.tsx — Theme-Aware
- *
- * Changes from Phase 2:
- *  - ThemeToggle extracted as a sub-component with `mounted` guard
- *    to prevent hydration mismatch on icon render
- *  - All hardcoded dark hex colours replaced with light/dark pairs
- *  - Scrolled state: bg-white/90 (light) ↔ bg-[#1e1e27]/80 (dark)
- *  - Burger bars, icon buttons, nav links — all theme-aware
+ * components/layout/Navbar.tsx — Theme-Aware Floating Capsule
  */
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import { motion } from "framer-motion";
 import MobileMenu from "./MobileMenu";
 import OffcanvasInfo from "./OffcanvasInfo";
 
@@ -27,10 +21,7 @@ const NAV_LINKS = [
   { href: "/#contact",   label: "Contact",   section: "contact" },
 ] as const;
 
-// ── Theme Toggle — isolated to prevent hydration issues ────────────────────
-// The mounted guard is CRITICAL: on the server and during first render, we
-// don't know which theme is active. Rendering a placeholder div that matches
-// the button size prevents layout shift when the real icon appears.
+// ── Theme Toggle ────────────────────────────────────────────────────────────
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -38,9 +29,8 @@ function ThemeToggle() {
   useEffect(() => setMounted(true), []);
 
   if (!mounted) {
-    // Placeholder matching exact button size — prevents layout shift
     return (
-      <div className="w-9 h-9 rounded-lg border border-gray-200 dark:border-white/10" />
+      <div className="w-10 h-10 rounded-full border border-gray-200 dark:border-white/10" />
     );
   }
 
@@ -51,34 +41,24 @@ function ThemeToggle() {
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       className={[
-        "w-9 h-9 flex items-center justify-center rounded-lg",
-        "border border-gray-200 dark:border-white/10",
+        "w-10 h-10 flex items-center justify-center rounded-full",
+        "border border-gray-200 dark:border-white/10 flex-shrink-0",
         "text-gray-500 dark:text-[#8f8f92]",
-        "hover:border-[#62a92b]/40 hover:text-[#62a92b]",
-        "dark:hover:border-[#62a92b]/40 dark:hover:text-[#62a92b] dark:hover:bg-[#62a92b]/5",
-        "transition-all duration-200",
+        "hover:border-primary-2/40 hover:text-primary-2 hover:bg-primary-2/5",
+        "dark:hover:border-primary-2/40 dark:hover:text-primary-2 dark:hover:bg-primary-2/5",
+        "transition-all duration-300",
       ].join(" ")}
     >
-      <i className={`${isDark ? "ri-sun-line" : "ri-moon-line"} text-base`} />
+      <i className={`${isDark ? "ri-sun-line" : "ri-moon-line"} text-lg`} />
     </button>
   );
 }
 
-// ── Main Navbar ────────────────────────────────────────────────────────────
+// ── Main Navbar (Floating Capsule) ─────────────────────────────────────────
 export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isInfoOpen, setIsInfoOpen]     = useState(false);
-  const [scrolled, setScrolled]         = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
-
-  // ── Scroll sticky ──────────────────────────────────────────────
-  const handleScroll = useCallback(() => setScrolled(window.scrollY > 50), []);
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
 
   // ── Active section via IntersectionObserver ────────────────────
   useEffect(() => {
@@ -103,113 +83,90 @@ export default function Navbar() {
 
   return (
     <>
-      <header
-        className={[
-          "fixed top-0 left-0 right-0 z-[100]",
-          "transition-all duration-300 ease-in-out",
-          scrolled
-            ? [
-                "py-3",
-                "bg-white/90 dark:bg-[#1e1e27]/90",
-                "backdrop-blur-xl",
-                "border-b border-gray-200/70 dark:border-white/5",
-                "shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)]",
-              ].join(" ")
-            : "py-5 bg-transparent",
-        ].join(" ")}
-      >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-4">
+      <header className="fixed top-4 left-1/2 -translate-x-1/2 z-[90] w-[95%] max-w-5xl transition-all duration-300 ease-in-out">
+        <div className="flex items-center justify-between px-4 md:px-6 py-3 rounded-full backdrop-blur-md bg-white/70 dark:bg-[#272730]/70 border border-gray-200/50 dark:border-white/10 shadow-lg">
+          
+          {/* ── Logo ──────────────────────────────────────────── */}
+          <Link href="/" className="flex items-center gap-2 group flex-shrink-0" aria-label="Huzaifa.dev home">
+            <Image
+              src="/imgs/home-page-2/template/favicon.svg"
+              alt=""
+              width={30}
+              height={30}
+              className="transition-transform duration-300 group-hover:rotate-12"
+              aria-hidden="true"
+            />
+            <span className="font-sans font-bold text-lg text-gray-900 dark:text-white sm:block">
+              Huzaifa<span className="text-primary-2 dark:text-primary-2">.dev</span>
+            </span>
+          </Link>
 
-            {/* ── Logo ──────────────────────────────────────────── */}
-            <Link href="/" className="flex items-center gap-2 group flex-shrink-0" aria-label="Huzaifa.dev home">
-              <Image
-                src="/imgs/home-page-2/template/favicon.svg"
-                alt=""
-                width={28}
-                height={28}
-                className="transition-transform duration-300 group-hover:rotate-12"
-                aria-hidden="true"
-              />
-              <span className="font-sans font-semibold text-base text-gray-900 dark:text-white">
-                Huzaifa<span className="text-green-700 dark:text-[#62a92b]">.dev</span>
-              </span>
-            </Link>
-
-            {/* ── Desktop Nav ───────────────────────────────────── */}
-            <nav aria-label="Primary navigation" className="hidden md:flex items-center gap-1">
-              {NAV_LINKS.map(({ href, label, section }) => {
-                const isActive = activeSection === section;
-                return (
-                  <Link
-                    key={href}
-                    href={href}
-                    className={[
-                      // lg: slightly larger for readability on wide monitors
-                      "relative px-3.5 py-2 text-sm lg:text-[0.925rem] font-sans rounded-lg",
-                      "transition-all duration-200",
-                      isActive
-                        ? "text-green-700 dark:text-[#62a92b]"
-                        : "text-gray-500 dark:text-[#8f8f92] hover:text-gray-900 dark:hover:text-white",
-                    ].join(" ")}
-                  >
-                    {label}
-                    <span
-                      className={[
-                        "absolute bottom-1.5 left-1/2 -translate-x-1/2",
-                        "w-1 h-1 rounded-full bg-green-700 dark:bg-[#62a92b]",
-                        "transition-all duration-200",
-                        isActive ? "opacity-100" : "opacity-0",
-                      ].join(" ")}
+          {/* ── Desktop Nav ───────────────────────────────────── */}
+          <nav aria-label="Primary navigation" className="hidden md:flex items-center gap-1 relative">
+            {NAV_LINKS.map(({ href, label, section }) => {
+              const isActive = activeSection === section;
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  className={[
+                    "relative px-4 py-2 text-[0.925rem] font-sans font-medium rounded-full",
+                    "transition-colors duration-300 z-10",
+                    isActive
+                      ? "text-primary-2 dark:text-primary-2"
+                      : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white",
+                  ].join(" ")}
+                >
+                  {label}
+                  {isActive && (
+                    <motion.div
+                      layoutId="navIndicator"
+                      className="absolute inset-0 rounded-full bg-primary-2/10 dark:bg-primary-2/10 z-[-1]"
+                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
                     />
-                  </Link>
-                );
-              })}
-            </nav>
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
 
-            {/* ── Controls ──────────────────────────────────────── */}
-            <div className="flex items-center gap-2">
+          {/* ── Controls ──────────────────────────────────────── */}
+          <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
+            {/* Mounted-safe theme toggle */}
+            <ThemeToggle />
 
-              {/* Mounted-safe theme toggle */}
-              <ThemeToggle />
+            {/* "Get in touch" — desktop */}
+            <button
+              onClick={openInfo}
+              aria-label="Open contact info"
+              className={[
+                "hidden md:flex items-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-sans font-bold tracking-wide",
+                "bg-primary-2 text-white shadow-md shadow-primary-2/20",
+                "hover:bg-[#528d24] hover:shadow-[0_4px_14px_rgba(98,169,43,0.3)] hover:-translate-y-0.5",
+                "transition-all duration-300",
+              ].join(" ")}
+            >
+              <i className="ri-send-plane-line text-[15px]" />
+              Get in touch
+            </button>
 
-              {/* "Get in touch" — desktop */}
-              <button
-                onClick={openInfo}
-                aria-label="Open contact info"
-                className={[
-                  "hidden md:flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-sans font-medium",
-                  "border border-green-600/40 text-green-700",
-                  "dark:border-[#62a92b]/30 dark:text-[#62a92b]",
-                  "hover:bg-green-700 hover:text-white hover:border-green-700",
-                  "dark:hover:bg-[#62a92b] dark:hover:text-[#1e1e27] dark:hover:border-[#62a92b]",
-                  // Prominent hover lift in both modes
-                  "hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(21,128,61,0.3)] dark:hover:shadow-[0_4px_14px_rgba(168,255,83,0.25)]",
-                  "transition-all duration-200",
-                ].join(" ")}
-              >
-                <i className="ri-send-plane-line text-sm" />
-                Get in touch
-              </button>
-
-              {/* Burger — mobile */}
-              <button
-                onClick={openMobile}
-                aria-label="Open navigation menu"
-                aria-expanded={isMobileOpen}
-                className={[
-                  "md:hidden w-9 h-9 flex flex-col items-center justify-center gap-1.5 rounded-lg",
-                  "border border-gray-200 dark:border-white/10",
-                  "hover:border-[#62a92b]/40 dark:hover:border-[#62a92b]/40",
-                  "hover:bg-[#62a92b]/5 dark:hover:bg-[#62a92b]/5",
-                  "transition-all duration-200",
-                ].join(" ")}
-              >
-                <span className={["block h-px w-5 bg-gray-600 dark:bg-[#8f8f92] rounded-full transition-all duration-300 origin-center", isMobileOpen ? "rotate-45 translate-y-[7px]" : ""].join(" ")} />
-                <span className={["block h-px w-5 bg-gray-600 dark:bg-[#8f8f92] rounded-full transition-all duration-300", isMobileOpen ? "opacity-0 scale-x-0" : ""].join(" ")} />
-                <span className={["block h-px w-5 bg-gray-600 dark:bg-[#8f8f92] rounded-full transition-all duration-300 origin-center", isMobileOpen ? "-rotate-45 -translate-y-[7px]" : ""].join(" ")} />
-              </button>
-            </div>
+            {/* Burger — mobile */}
+            <button
+              onClick={openMobile}
+              aria-label="Open navigation menu"
+              aria-expanded={isMobileOpen}
+              className={[
+                "md:hidden w-10 h-10 flex flex-col items-center justify-center gap-[5px] rounded-full",
+                "border border-gray-200 dark:border-white/10",
+                "hover:border-primary-2/40 dark:hover:border-primary-2/40",
+                "hover:bg-primary-2/5 dark:hover:bg-primary-2/5",
+                "transition-all duration-300",
+              ].join(" ")}
+            >
+              <span className={["block h-[2px] w-5 bg-gray-600 dark:bg-gray-300 rounded-full transition-all duration-300 origin-center", isMobileOpen ? "rotate-45 translate-y-[7px]" : ""].join(" ")} />
+              <span className={["block h-[2px] w-5 bg-gray-600 dark:bg-gray-300 rounded-full transition-all duration-300", isMobileOpen ? "opacity-0 scale-x-0" : ""].join(" ")} />
+              <span className={["block h-[2px] w-5 bg-gray-600 dark:bg-gray-300 rounded-full transition-all duration-300 origin-center", isMobileOpen ? "-rotate-45 -translate-y-[7px]" : ""].join(" ")} />
+            </button>
           </div>
         </div>
       </header>

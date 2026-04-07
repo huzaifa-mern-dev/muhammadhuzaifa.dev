@@ -97,12 +97,12 @@ const config: Config = {
 
       // ─── Font Families ───────────────────────────────────────────────────
       fontFamily: {
+        // Default sans now rigidly mapped to our Satoshi variable!
+        sans: ["var(--font-satoshi)", "sans-serif"],
         // Google Fonts — loaded via next/font/google in layout.tsx
         urbanist: ["var(--font-sans)", "sans-serif"],
         "dm-mono": ["var(--font-dm-mono)", "monospace"],
         playfair: ["var(--font-playfair)", "serif"],
-        // Local font — loaded via next/font/local in layout.tsx
-        satoshi: ["var(--font-satoshi)", "sans-serif"],
       },
 
       // ─── Font Sizes (mapped from --tc-fs-* and --tc-ds-*) ───────────────

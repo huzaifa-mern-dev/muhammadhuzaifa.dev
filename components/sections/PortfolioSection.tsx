@@ -4,31 +4,24 @@
  *
  * Features:
  *  - Swiper carousel with coverflow effect, loop, and autoplay
- *  - yet-another-react-lightbox for full-screen image zoom on click
- *  - Tech tag pills per project
- *  - Live / GitHub link buttons
- *  - Full light + dark theme awareness
+ *  - Premium Framer Motion interactive project modal (Split Layout)
+ *  - Deep theme awareness with primary-2 targeted accents
  */
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectCoverflow, Navigation, Pagination, Keyboard } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
-import Lightbox from 'yet-another-react-lightbox';
-import Zoom from 'yet-another-react-lightbox/plugins/zoom';
-import Captions from 'yet-another-react-lightbox/plugins/captions';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Swiper Core CSS
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-// Lightbox CSS
-import 'yet-another-react-lightbox/styles.css';
-import 'yet-another-react-lightbox/plugins/captions.css';
 
-import { projects } from '@/lib/data/projects';
+import { projects, type Project } from '@/lib/data/projects';
 
 // ─── Section Label ────────────────────────────────────────────────────────────
 function SectionLabel() {
@@ -46,17 +39,73 @@ function SectionLabel() {
 // ─── Technology Tag ───────────────────────────────────────────────────────────
 function TechTag({ label }: { label: string }) {
   return (
-    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-gray-100 dark:bg-white/[0.05] text-gray-500 dark:text-[#636366] border border-gray-200 dark:border-white/[0.07]">
+    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-gray-100 dark:bg-white/[0.05] text-gray-500 dark:text-[#8f8f92] border border-gray-200 dark:border-white/[0.07]">
       {label}
     </span>
+  );
+}
+
+// ─── Modal Nested Carousel ────────────────────────────────────────────────────
+function ModalCarousel({ images, alt }: { images: string[], alt: string }) {
+  const [index, setIndex] = useState(0);
+
+  const prev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIndex(index === 0 ? images.length - 1 : index - 1);
+  };
+  const next = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIndex(index === images.length - 1 ? 0 : index + 1);
+  };
+
+  return (
+    <div className="relative w-full h-[300px] sm:h-[400px] lg:h-full min-h-[300px] bg-gray-50 dark:bg-[#272730] overflow-hidden group flex items-center justify-center">
+      <Image
+        src={images[index]}
+        alt={`${alt} screenshot ${index + 1}`}
+        fill
+        className="object-contain mx-auto"
+        priority
+      />
+      
+      {/* Absolute Gradient overlay to ensure arrows and dots are visible over light images */}
+      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+      
+      {images.length > 1 && (
+        <>
+          <button 
+            onClick={prev} 
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white flex items-center justify-center hover:bg-primary-2 hover:border-primary-2 transition-colors opacity-0 group-hover:opacity-100 shadow-xl" 
+            aria-label="Previous image"
+          >
+            <i className="ri-arrow-left-s-line text-xl" />
+          </button>
+          <button 
+            onClick={next} 
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white flex items-center justify-center hover:bg-primary-2 hover:border-primary-2 transition-colors opacity-0 group-hover:opacity-100 shadow-xl" 
+            aria-label="Next image"
+          >
+            <i className="ri-arrow-right-s-line text-xl" />
+          </button>
+          
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            {images.map((_, i) => (
+              <div 
+                key={i} 
+                className={`h-1.5 rounded-full transition-all duration-300 shadow-sm ${i === index ? 'w-6 bg-primary-2' : 'w-2 bg-white/40'}`} 
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function PortfolioSection() {
   const [activeTab, setActiveTab] = useState('All');
-  const [lightboxOpen,  setLightboxOpen]  = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const swiperRef = useRef<SwiperType | null>(null);
 
   const filterCategories = ["All", "E-commerce", "WordPress", "Custom Code"];
@@ -69,17 +118,15 @@ export default function PortfolioSection() {
     return true;
   });
 
-  // Build the slides array for the lightbox (yarl expects { src, title, description })
-  const slides = filteredProjects.map((p) => ({
-    src: p.image,
-    title: `${p.title}${p.subtitle ? ` — ${p.subtitle}` : ''}`,
-    description: p.technologies.join(' · '),
-  }));
-
-  function openLightbox(index: number) {
-    setLightboxIndex(index);
-    setLightboxOpen(true);
-  }
+  // Lock body scroll when modal is active
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [selectedProject]);
 
   return (
     <section
@@ -99,25 +146,30 @@ export default function PortfolioSection() {
         className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-[#62a92b]/[0.04] dark:bg-[#62a92b]/[0.04] blur-3xl"
       />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-7xl">
         {/* ── Heading ─────────────────────────────────────────────────────── */}
         <div className="text-center mb-14">
           <SectionLabel />
           <h2
             id="portfolio-heading"
-            className="text-3xl md:text-4xl font-bold font-sans text-gray-900 dark:text-white mb-4 leading-tight"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold font-sans text-gray-900 dark:text-white mb-6 leading-tight"
           >
             Featured{' '}
-            <span className="text-primary-2 dark:text-primary-2">Projects</span>
+            <span className="text-primary-2 dark:text-primary-2 relative inline-block">
+              Projects
+              <svg className="absolute -bottom-2 left-0 w-full h-3 text-primary-2/30" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M0,50 Q25,20 50,50 T100,50" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="round" />
+              </svg>
+            </span>
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 font-sans font-normal text-base max-w-xl mx-auto leading-relaxed">
-            A curated selection of work spanning full-stack apps, landing pages,
-            and SaaS products. Click any card to zoom in.
+          <p className="text-gray-600 dark:text-[#a1a1aa] font-sans font-normal text-base lg:text-lg max-w-2xl mx-auto leading-relaxed">
+            A curated selection of work spanning full-stack apps, dynamic landing pages,
+            and complete SaaS infrastructures. Click any card to explore.
           </p>
         </div>
 
         {/* ── Filter Tabs ─────────────────────────────────────────────────── */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
           {filterCategories.map((category) => (
             <button
               key={category}
@@ -128,10 +180,10 @@ export default function PortfolioSection() {
                 }
               }}
               className={[
-                "px-5 py-2 rounded-full text-sm font-medium font-sans transition-all duration-200",
+                "px-6 py-2.5 rounded-full text-sm font-semibold font-sans transition-all duration-300 border",
                 activeTab === category
-                  ? "bg-primary-2 text-white shadow-md shadow-primary-2/20 dark:text-[#1e1e27] dark:shadow-none"
-                  : "bg-white dark:bg-white/[0.03] text-gray-600 dark:text-[#8f8f92] border border-gray-200 dark:border-white/[0.08] hover:border-primary-2/50 hover:text-primary-2",
+                  ? "bg-primary-2 border-primary-2 text-white shadow-[0_0_20px_rgba(98,169,43,0.3)]"
+                  : "bg-white dark:bg-white/[0.02] text-gray-600 dark:text-[#8f8f92] border-gray-200 dark:border-white/10 hover:border-primary-2/50 dark:hover:border-primary-2/50 hover:text-primary-2 dark:hover:text-primary-2 shadow-sm dark:shadow-none",
               ].join(" ")}
             >
               {category}
@@ -140,7 +192,7 @@ export default function PortfolioSection() {
         </div>
 
         {/* ── Swiper Carousel ─────────────────────────────────────────────── */}
-        <div className="relative portfolio-swiper-wrapper">
+        <div className="relative portfolio-swiper-wrapper max-w-full overflow-visible">
           <Swiper
             onSwiper={(swiper) => { swiperRef.current = swiper; }}
             modules={[Autoplay, EffectCoverflow, Navigation, Pagination, Keyboard]}
@@ -152,7 +204,7 @@ export default function PortfolioSection() {
             coverflowEffect={{
               rotate: 0,
               stretch: 0,
-              depth: 120,
+              depth: 100,
               modifier: 2.5,
               slideShadows: false,
             }}
@@ -163,9 +215,9 @@ export default function PortfolioSection() {
               prevEl: '.pf-btn-prev',
             }}
             breakpoints={{
-              0:    { slidesPerView: 1.1 },
-              640:  { slidesPerView: 1.5 },
-              1024: { slidesPerView: 2.2 },
+              0:    { slidesPerView: 1.15 },
+              640:  { slidesPerView: 1.6 },
+              1024: { slidesPerView: 2.3 },
               1280: { slidesPerView: 2.8 },
             }}
             className="!pb-12"
@@ -176,110 +228,75 @@ export default function PortfolioSection() {
                 {({ isActive }) => (
                   <article
                     className={[
-                      'group relative rounded-2xl overflow-hidden border cursor-pointer select-none',
-                      'bg-white dark:bg-[#1e1e27]',
-                      'border-gray-200/70 dark:border-white/[0.07]',
-                      'shadow-[0_2px_12px_rgba(0,0,0,0.06)] dark:shadow-none',
-                      'transition-all duration-500',
+                      'group relative rounded-3xl overflow-hidden border cursor-pointer select-none',
+                      'bg-white dark:bg-[#272730]',
+                      'border-gray-200 dark:border-white/5',
+                      'shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none',
+                      'transition-all duration-500 ease-out',
+                      'hover:border-primary-2/50 dark:hover:border-primary-2/40 hover:shadow-[0_8px_40px_rgba(98,169,43,0.15)]',
                       isActive
                         ? 'scale-100 opacity-100'
-                        : 'scale-[0.96] opacity-70',
+                        : 'scale-[0.92] opacity-50 grayscale-[30%]',
                     ].join(' ')}
-                    onClick={() => openLightbox(i)}
+                    onClick={() => setSelectedProject(project)}
                     role="button"
                     tabIndex={isActive ? 0 : -1}
-                    aria-label={`View ${project.title} in fullscreen`}
+                    aria-label={`View details for ${project.title}`}
                     onKeyDown={(e) => {
                       if ((e.key === 'Enter' || e.key === ' ') && isActive) {
-                        openLightbox(i);
+                        e.preventDefault();
+                        setSelectedProject(project);
                       }
                     }}
                   >
-                    {/* ── Image ─────────────────────────────────────────── */}
-                    <div className="relative w-full aspect-[16/12] overflow-hidden">
+                    {/* ── Card Image Header ───────────────────────────────── */}
+                    <div className="relative w-full aspect-[16/11] overflow-hidden bg-gray-100 dark:bg-black/20">
                       <Image
                         src={project.image}
                         alt={`${project.title} screenshot`}
                         fill
                         sizes="(max-width: 640px) 95vw, (max-width: 1024px) 60vw, 40vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                         priority={i < 3}
                       />
 
-                      {/* Gradient overlay — appears on hover */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-end p-5">
-                        <div className="flex gap-2">
-                          {project.liveUrl && (
-                            <a
-                              href={project.liveUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs font-medium hover:bg-white/20 transition-colors"
-                              aria-label={`View ${project.title} live site`}
-                            >
-                              <i className="ri-external-link-line text-sm" />
-                              Live
-                            </a>
-                          )}
-                          {project.githubUrl && (
-                            <a
-                              href={project.githubUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs font-medium hover:bg-white/20 transition-colors"
-                              aria-label={`View ${project.title} on GitHub`}
-                            >
-                              <i className="ri-github-line text-sm" />
-                              GitHub
-                            </a>
-                          )}
-                          <button
-                            onClick={(e) => { e.stopPropagation(); openLightbox(i); }}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-2/20 backdrop-blur-sm border border-primary-2/30 text-primary-2 dark:text-primary-2 text-xs font-medium hover:bg-primary-2/30 transition-colors"
-                            aria-label="Zoom project image"
-                          >
-                            <i className="ri-zoom-in-line text-sm" />
-                            Zoom
-                          </button>
+                      {/* Hover Overlay indicating click action */}
+                      <div className="absolute inset-0 bg-primary-2/90 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-primary-2 shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+                          <i className="ri-add-line text-3xl font-bold" />
                         </div>
-                      </div>
-
-                      {/* Zoom hint icon top-right */}
-                      <div className="absolute top-3 right-3 w-8 h-8 rounded-lg bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <i className="ri-fullscreen-line text-white text-sm" />
+                        <span className="text-white font-sans font-bold mt-4 tracking-wide uppercase text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-100">
+                          View Details
+                        </span>
                       </div>
                     </div>
 
-                    {/* ── Card body ─────────────────────────────────────── */}
-                    <div className="p-5 text-left">
-                      <div className="mb-3">
-                        <h3 className="font-sans font-bold text-gray-900 dark:text-white text-lg md:text-xl leading-snug group-hover:text-primary-2 dark:group-hover:text-primary-2 transition-colors duration-200">
+                    {/* ── Card Body ───────────────────────────────────────── */}
+                    <div className="p-6 lg:p-8 text-left bg-white dark:bg-[#272730] relative z-10">
+                      <div className="mb-4">
+                        <h3 className="font-sans font-bold text-gray-900 dark:text-white text-xl md:text-2xl leading-tight">
                           {project.title}
-                          {project.subtitle && (
-                            <span className="block text-xs font-normal text-gray-400 dark:text-[#636366] mt-0.5">
-                              {project.subtitle}
-                            </span>
-                          )}
                         </h3>
+                        {project.subtitle && (
+                          <span className="block text-sm font-semibold font-sans text-primary-2 mt-1">
+                            {project.subtitle}
+                          </span>
+                        )}
                       </div>
 
-                      <p className="text-base font-sans font-normal text-gray-600 dark:text-gray-300 leading-relaxed mb-4 line-clamp-2">
+                      <p className="text-base font-sans font-normal text-gray-500 dark:text-gray-400 mb-6 line-clamp-2">
                         {project.description}
                       </p>
 
-                      <div className="flex flex-wrap gap-1.5 border-t border-gray-100 dark:border-white/[0.05] pt-3">
-                        {project.technologies.map((tech) => (
+                      <div className="flex flex-wrap gap-2 border-t border-gray-100 dark:border-white/5 pt-4">
+                        {project.technologies.slice(0, 3).map((tech) => (
                           <TechTag key={tech} label={tech} />
                         ))}
+                        {project.technologies.length > 3 && (
+                          <TechTag label={`+${project.technologies.length - 3}`} />
+                        )}
                       </div>
                     </div>
-
-                    {/* Active slide accent line */}
-                    {isActive && (
-                      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary-2 dark:via-primary-2 to-transparent" />
-                    )}
                   </article>
                 )}
               </SwiperSlide>
@@ -288,56 +305,158 @@ export default function PortfolioSection() {
 
           {/* ── Custom Nav Buttons ───────────────────────────────────────── */}
           <button
-            className="pf-btn-prev absolute left-0 top-[38%] -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white dark:bg-[#1e1e27] border border-gray-200 dark:border-white/[0.08] shadow-md flex items-center justify-center text-gray-500 dark:text-[#8f8f92] hover:border-primary-2/50 hover:text-primary-2 transition-all duration-200 disabled:opacity-30"
+            className="pf-btn-prev absolute left-0 top-[40%] -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white dark:bg-[#272730] border border-gray-200 dark:border-white/10 shadow-lg flex items-center justify-center text-gray-900 dark:text-white hover:border-primary-2 hover:bg-primary-2 hover:text-white transition-all duration-300 disabled:opacity-0 disabled:pointer-events-none"
             aria-label="Previous project"
           >
-            <i className="ri-arrow-left-s-line text-lg" />
+            <i className="ri-arrow-left-s-line text-2xl" />
           </button>
           <button
-            className="pf-btn-next absolute right-0 top-[38%] -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white dark:bg-[#1e1e27] border border-gray-200 dark:border-white/[0.08] shadow-md flex items-center justify-center text-gray-500 dark:text-[#8f8f92] hover:border-primary-2/50 hover:text-primary-2 transition-all duration-200 disabled:opacity-30"
+            className="pf-btn-next absolute right-0 top-[40%] -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white dark:bg-[#272730] border border-gray-200 dark:border-white/10 shadow-lg flex items-center justify-center text-gray-900 dark:text-white hover:border-primary-2 hover:bg-primary-2 hover:text-white transition-all duration-300 disabled:opacity-0 disabled:pointer-events-none"
             aria-label="Next project"
           >
-            <i className="ri-arrow-right-s-line text-lg" />
+            <i className="ri-arrow-right-s-line text-2xl" />
           </button>
         </div>
-
-        {/* ── Project Count ───────────────────────────────────────────────── */}
-        <p className="text-center text-xs font-mono text-gray-300 dark:text-[#3b3b41] mt-2">
-          {filteredProjects.length} projects · click to expand
-        </p>
       </div>
 
-      {/* ── Lightbox ─────────────────────────────────────────────────────── */}
-      <Lightbox
-        open={lightboxOpen}
-        close={() => setLightboxOpen(false)}
-        index={lightboxIndex}
-        slides={slides}
-        plugins={[Zoom, Captions]}
-        zoom={{ maxZoomPixelRatio: 3 }}
-        carousel={{ finite: false }}
-        styles={{
-          container: { backgroundColor: 'rgba(0,0,0,0.92)' },
-        }}
-        on={{
-          view: ({ index }) => setLightboxIndex(index),
-        }}
-      />
+      {/* ── Interactive Modal via Framer Motion ─────────────────────────── */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 lg:p-8"
+          >
+            {/* Backdrop */}
+            <div 
+              className="absolute inset-0 bg-gray-900/40 dark:bg-black/60 backdrop-blur-md cursor-pointer"
+              onClick={() => setSelectedProject(null)}
+              aria-hidden="true"
+            />
+            
+            {/* Modal Container */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-6xl max-h-[90vh] bg-white dark:bg-[#1a1a22] border border-gray-200 dark:border-white/10 rounded-3xl shadow-2xl overflow-y-auto overflow-x-hidden flex flex-col"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="modal-title"
+            >
+              {/* Close Button */}
+              <button 
+                onClick={() => setSelectedProject(null)}
+                className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/5 dark:bg-white/10 hover:bg-red-500 hover:text-white border border-transparent dark:border-white/5 flex items-center justify-center transition-all duration-200 text-gray-500 dark:text-gray-300 shadow-sm"
+                aria-label="Close modal"
+              >
+                <i className="ri-close-line text-xl" />
+              </button>
 
-      {/* ── Swiper pagination dot overrides ─────────────────────────────── */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:h-full">
+                
+                {/* ── Left Column: Content ── */}
+                <div className="p-8 lg:p-12 xl:p-16 flex flex-col order-2 lg:order-1 border-t lg:border-t-0 lg:border-r border-gray-100 dark:border-white/5 bg-white dark:bg-[#1a1a22]">
+                  <h3 id="modal-title" className="text-3xl lg:text-4xl font-bold font-sans text-gray-900 dark:text-white mb-2 leading-tight">
+                    {selectedProject.title}
+                  </h3>
+                  {selectedProject.subtitle && (
+                    <span className="block text-lg font-semibold font-sans text-primary-2 mb-6">
+                      {selectedProject.subtitle}
+                    </span>
+                  )}
+
+                  <p className="text-base font-sans font-normal text-gray-600 dark:text-gray-300 leading-relaxed mb-8">
+                    {selectedProject.fullDescription || selectedProject.description}
+                  </p>
+
+                  {/* Features List */}
+                  {selectedProject.features && (
+                    <div className="mb-8">
+                      <h4 className="text-sm font-bold font-sans text-gray-900 dark:text-white uppercase tracking-wider mb-4 border-b border-gray-100 dark:border-white/5 pb-2">
+                        Key Features
+                      </h4>
+                      <ul className="flex flex-col gap-3">
+                        {selectedProject.features.map((feature, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <i className="ri-checkbox-circle-fill text-primary-2 text-lg mt-[-2px]" />
+                            <span className="text-sm lg:text-base font-sans text-gray-600 dark:text-[#a1a1aa] leading-snug">
+                              {feature}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Tech Stack */}
+                  <div className="mb-10">
+                    <h4 className="text-sm font-bold font-sans text-gray-900 dark:text-white uppercase tracking-wider mb-4 border-b border-gray-100 dark:border-white/5 pb-2">
+                      Technologies
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedProject.technologies.map(tech => (
+                        <span key={tech} className="px-3 py-1.5 rounded-lg bg-gray-50 dark:bg-[#272730] border border-gray-200 dark:border-white/10 text-xs font-mono text-gray-700 dark:text-white">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* CTAs */}
+                  <div className="mt-auto flex flex-wrap gap-4 pt-4">
+                    {selectedProject.liveUrl && (
+                      <a 
+                        href={selectedProject.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-primary-2 text-white font-sans font-bold text-sm hover:bg-[#528d24] transition-colors shadow-lg shadow-primary-2/20"
+                      >
+                        <i className="ri-external-link-line" />
+                        Live Demo
+                      </a>
+                    )}
+                    {selectedProject.githubUrl && (
+                      <a 
+                        href={selectedProject.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-white dark:bg-[#272730] text-gray-900 dark:text-white font-sans font-bold text-sm border border-gray-200 dark:border-white/10 hover:border-gray-900 dark:hover:border-white transition-colors shadow-sm dark:shadow-none"
+                      >
+                        <i className="ri-github-fill" />
+                        Source Code
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                {/* ── Right Column: Image Carousel ── */}
+                <div className="order-1 lg:order-2 bg-gray-50 dark:bg-[#111116] w-full min-h-[300px]">
+                  <ModalCarousel 
+                    images={selectedProject.images || [selectedProject.image]} 
+                    alt={selectedProject.title} 
+                  />
+                </div>
+
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Swiper pagination overrides ─────────────────────────────── */}
       <style jsx global>{`
         .portfolio-swiper-wrapper .swiper-pagination-bullet {
           background: #62a92b;
           opacity: 0.35;
         }
-        .dark .portfolio-swiper-wrapper .swiper-pagination-bullet {
-          background: #62a92b;
-          opacity: 0.35;
-        }
         .portfolio-swiper-wrapper .swiper-pagination-bullet-active {
           opacity: 1 !important;
-          width: 20px;
-          border-radius: 4px;
+          width: 24px;
+          border-radius: 6px;
         }
       `}</style>
     </section>

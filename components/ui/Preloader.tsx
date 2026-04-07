@@ -3,92 +3,107 @@
 /**
  * components/ui/Preloader.tsx
  *
- * Full-screen overlay that fades out on mount.
- * Unmounts from the DOM completely after the animation so it
- * never blocks interaction or accessibility.
+ * Awwwards-style Webflow slice preloader logic powered by GSAP.
+ * Locks the body scroll while active, ticks a counter to 100%,
+ * fades out the logo, and sequentially slices the background out of the viewport.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(useGSAP);
+}
 
 export default function Preloader() {
-  // Two-stage state:
-  // 1. `fading` → triggers the CSS opacity transition
-  // 2. `hidden` → removes the element from the DOM entirely
-  const [fading, setFading] = useState(false);
-  const [hidden, setHidden] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const counterRef = useRef<HTMLSpanElement>(null);
 
+  // Lock scrolling while preloader is active, unlock when complete or unmounted
   useEffect(() => {
-    // Start the fade after a short delay so the logo is visible briefly
-    const fadeTimer = setTimeout(() => setFading(true), 800);
-    // Remove from DOM after fade is complete (matches transition duration below)
-    const hideTimer = setTimeout(() => setHidden(true), 1400);
-
+    if (!isComplete) {
+      document.body.style.overflow = "hidden";
+    } else {
+      // Must clear it exactly
+      document.body.style.overflow = "";
+    }
     return () => {
-      clearTimeout(fadeTimer);
-      clearTimeout(hideTimer);
+      document.body.style.overflow = "";
     };
-  }, []);
+  }, [isComplete]);
 
-  if (hidden) return null;
+  useGSAP(() => {
+    if (!containerRef.current) return;
+
+    // Timeline configuration
+    const tl = gsap.timeline({
+      onComplete: () => {
+        setIsComplete(true);
+      },
+    });
+
+    const counter = { val: 0 };
+
+    // Phase 1: Animate the counter from 0 to 100 over ~2 seconds
+    tl.to(counter, {
+      val: 100,
+      duration: 2.2, // Smooth wait time
+      ease: "power2.inOut",
+      onUpdate: () => {
+        if (counterRef.current) {
+          // Update the DOM counter dynamically exactly matching the easing curve
+          counterRef.current.innerText = Math.round(counter.val).toString();
+        }
+      },
+    })
+    // Phase 2: Fade out the Logo and Counter text quickly with a subtle lift
+    .to(contentRef.current, {
+      opacity: 0,
+      y: -40,
+      duration: 0.5,
+      ease: "power3.inOut",
+    }, "+=0.2") // Trigger 0.2s after hitting 100%
+    // Phase 3: Animate the 5 background slices sliding upwards (waterfall slice exit)
+    .to(".preloader-slice", {
+      yPercent: -100,
+      duration: 1.2,
+      stagger: 0.1, // Stagger delays the exit of each slice slightly
+      ease: "power4.inOut",
+    });
+
+  }, { scope: containerRef });
+
+  // Completely remove from DOM once the sequence is visually cleared
+  if (isComplete) return null;
 
   return (
     <div
-      aria-hidden="true"
-      className={[
-        "fixed inset-0 z-[9999] flex items-center justify-center",
-        "bg-[#272730] dark:bg-[#272730]",
-        "transition-opacity duration-500 ease-in-out",
-        fading ? "opacity-0 pointer-events-none" : "opacity-100",
-      ].join(" ")}
+      ref={containerRef}
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-transparent pointer-events-none"
     >
-      {/* Animated logo mark */}
-      <div className="flex flex-col items-center gap-5 select-none">
-        {/* Spinning ring SVG */}
-        <div className="relative w-16 h-16">
-          {/* Static outer circle */}
-          <svg
-            className="absolute inset-0 w-full h-full"
-            viewBox="0 0 64 64"
-            fill="none"
-          >
-            <circle
-              cx="32"
-              cy="32"
-              r="28"
-              stroke="#3b3b41"
-              strokeWidth="3"
-            />
-          </svg>
-          {/* Spinning accent arc */}
-          <svg
-            className="absolute inset-0 w-full h-full animate-spin"
-            viewBox="0 0 64 64"
-            fill="none"
-            style={{ animationDuration: "1.1s" }}
-          >
-            <circle
-              cx="32"
-              cy="32"
-              r="28"
-              stroke="#62a92b"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeDasharray="40 135"
-            />
-          </svg>
+      {/* Slices Container - blocks interactions while animating */}
+      <div className="absolute inset-0 flex pointer-events-auto">
+        {[...Array(5)].map((_, i) => (
+          <div 
+            key={i} 
+            className="preloader-slice w-1/5 h-full bg-primary-2" // Enforced deep dark theme
+          />
+        ))}
+      </div>
 
-          {/* Logo letter in the centre */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-[#62a92b] font-sans font-bold text-xl leading-none">
-              H
-            </span>
-          </div>
+      {/* Foreground Brand / Counter */}
+      <div ref={contentRef} className="relative z-10 flex flex-col items-center pointer-events-none">
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 text-white">
+          Huzaifa<span className="text-white">.dev</span>
+        </h1>
+        
+        <div className="text-white text-lg md:text-xl flex items-center justify-center tracking-widest mt-2 overflow-hidden">
+          <span ref={counterRef} className="w-[3ch] text-right">0</span>
+          <span className="text-white opacity-80">%</span>
         </div>
-
-        {/* Brand name */}
-        <p className="text-white font-sans font-light text-sm tracking-[0.25em] uppercase">
-          Huzaifa<span className="text-[#62a92b]">.dev</span>
-        </p>
       </div>
     </div>
   );
