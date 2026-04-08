@@ -1,11 +1,6 @@
-/**
- * app/actions/contact.ts — Next.js Server Action
- *
- * Handles contact form submissions.
- * Currently simulates a send delay and returns success.
- * Wire Resend/Nodemailer here in Phase 5.
- */
 'use server';
+
+import { Resend } from 'resend';
 
 export interface ContactFormData {
   name: string;
@@ -17,13 +12,15 @@ export interface ContactFormData {
 
 export interface ContactActionResult {
   success: boolean;
+  message?: string;
   error?: string;
 }
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function submitContactForm(
   formData: ContactFormData
 ): Promise<ContactActionResult> {
-  // Basic server-side validation
   if (!formData.name?.trim()) {
     return { success: false, error: 'Name is required.' };
   }
@@ -34,15 +31,29 @@ export async function submitContactForm(
     return { success: false, error: 'Message must be at least 10 characters.' };
   }
 
-  // TODO (Phase 5): Replace this block with Resend / Nodemailer
-  // ─────────────────────────────────────────────────────────────
-  // import { Resend } from 'resend';
-  // const resend = new Resend(process.env.RESEND_API_KEY);
-  // await resend.emails.send({ from: '...', to: '...', ... });
-  // ─────────────────────────────────────────────────────────────
+  try {
+    const { error } = await resend.emails.send({
+      from: 'Acme <onboarding@resend.dev>',
+      to: process.env.CONTACT_EMAIL || 'muhammadhuzaifa.dev@gmail.com',
+      subject: `New Contact Request: ${formData.subject}`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${formData.name}</p>
+        <p><strong>Email:</strong> ${formData.email}</p>
+        <p><strong>Phone:</strong> ${formData.phone || 'N/A'}</p>
+        <p><strong>Subject:</strong> ${formData.subject}</p>
+        <hr />
+        <p><strong>Message:</strong></p>
+        <p>${formData.message.replace(/\n/g, '<br/>')}</p>
+      `,
+    });
 
-  // Simulate network latency of a real email provider
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+    if (error) {
+      return { success: false, error: error.message };
+    }
 
-  return { success: true };
+    return { success: true, message: 'Message sent successfully!' };
+  } catch (error) {
+    return { success: false, error: 'Internal Server Error' };
+  }
 }
