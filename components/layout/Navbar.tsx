@@ -1,9 +1,5 @@
 "use client";
 
-/**
- * components/layout/Navbar.tsx — Theme-Aware Floating Capsule
- */
-
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -21,7 +17,6 @@ const NAV_LINKS = [
   { href: "/#contact",   label: "Contact",   section: "contact" },
 ] as const;
 
-// ── Theme Toggle ────────────────────────────────────────────────────────────
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -54,13 +49,11 @@ function ThemeToggle() {
   );
 }
 
-// ── Main Navbar (Floating Capsule) ─────────────────────────────────────────
 export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isInfoOpen, setIsInfoOpen]     = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
 
-  // ── Active section via IntersectionObserver ────────────────────
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
 
@@ -86,7 +79,6 @@ export default function Navbar() {
       <header className="fixed top-4 left-1/2 -translate-x-1/2 z-[90] w-[95%] max-w-5xl transition-all duration-300 ease-in-out">
         <div className="flex items-center justify-between px-4 md:px-6 py-3 rounded-full backdrop-blur-md bg-white/70 dark:bg-[#272730]/70 border border-gray-200/50 dark:border-white/10 shadow-lg">
           
-          {/* ── Logo ──────────────────────────────────────────── */}
           <Link href="/" className="flex items-center gap-2 group flex-shrink-0" aria-label="Huzaifa.dev home">
             <Image
               src="/imgs/home-page-2/template/favicon.svg"
@@ -101,7 +93,6 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* ── Desktop Nav ───────────────────────────────────── */}
           <nav aria-label="Primary navigation" className="hidden md:flex items-center gap-1 relative">
             {NAV_LINKS.map(({ href, label, section }) => {
               const isActive = activeSection === section;
@@ -130,12 +121,9 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* ── Controls ──────────────────────────────────────── */}
           <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
-            {/* Mounted-safe theme toggle */}
             <ThemeToggle />
 
-            {/* "Get in touch" — desktop */}
             <button
               onClick={openInfo}
               aria-label="Open contact info"
@@ -150,7 +138,6 @@ export default function Navbar() {
               Get in touch
             </button>
 
-            {/* Burger — mobile */}
             <button
               onClick={openMobile}
               aria-label="Open navigation menu"

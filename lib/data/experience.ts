@@ -1,8 +1,3 @@
-/**
- * lib/data/experience.ts
- * Work experience timeline data.
- * Refactored for punchy bullet points and sorted by current role.
- */
 
 export interface ExperienceEntry {
   id: string;

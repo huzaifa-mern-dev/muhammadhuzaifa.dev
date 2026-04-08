@@ -1,9 +1,3 @@
-/**
- * components/sections/ResumeSection.tsx — Server Component, Theme-Aware
- *
- * Refactored for perfect symmetry, exact typography requirements,
- * visually balanced vertical rhythm, and unified timeline design.
- */
 
 import { education, type EducationEntry } from "@/lib/data/education";
 import { experience, type ExperienceEntry } from "@/lib/data/experience";
@@ -32,8 +26,6 @@ function ColumnHeading({ icon, title }: { icon: string; title: string }) {
   );
 }
 
-// ─── Shared Item Component to Guarantee Identical Typography & Timeline ──────
-
 function TimelineItem({
   title,
   subtitle,
@@ -51,7 +43,6 @@ function TimelineItem({
 }) {
   return (
     <div className="relative pl-8">
-      {/* Absolute Timeline Dot (centered over the 2px left border wrapper) */}
       <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-primary-2 border-4 border-gray-100 dark:border-[#1a1a22]" />
 
       <div className={[
@@ -63,7 +54,6 @@ function TimelineItem({
         "hover:border-primary-2/40 dark:hover:border-primary-2/30",
       ].join(" ")}>
         
-        {/* Header Block */}
         <div className="flex items-start justify-between gap-4 mb-2">
           <div>
             <h4 className="text-lg lg:text-xl font-bold font-sans text-gray-900 dark:text-white leading-snug">
@@ -80,12 +70,10 @@ function TimelineItem({
           )}
         </div>
 
-        {/* Date / Location */}
         <p className="text-xs lg:text-sm font-sans text-gray-500 dark:text-gray-400 mt-2">
           {date} {location && `· ${location}`}
         </p>
 
-        {/* Bullets */}
         <ul className="text-sm lg:text-base font-sans text-gray-600 dark:text-gray-300 leading-relaxed mt-4 flex flex-col gap-2">
           {highlights.map((bullet, idx) => (
             <li key={idx} className="flex flex-row items-start gap-2.5">
@@ -106,14 +94,12 @@ export default function ResumeSection() {
       className="relative py-24 lg:py-32 overflow-hidden bg-gray-100 dark:bg-[#1a1a22]"
       aria-labelledby="resume-heading"
     >
-      {/* Background blobs */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-20 top-1/4 w-[500px] h-[500px] rounded-full bg-primary-2/[0.04] dark:bg-primary-2/[0.03] blur-3xl opacity-50" />
         <div className="absolute -right-20 bottom-1/4 w-[500px] h-[500px] rounded-full bg-primary-2/[0.02] dark:bg-primary-2/[0.02] blur-3xl opacity-50" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-7xl">
-        {/* Heading */}
         <AnimatedSection variant="fade-up">
           <div className="text-center mb-16 lg:mb-24">
             <SectionLabel />
@@ -135,10 +121,8 @@ export default function ResumeSection() {
           </div>
         </AnimatedSection>
 
-        {/* Two-column vertical alignment perfectly matched */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           
-          {/* EDUCATION COLUMN */}
           <AnimatedSection variant="fade-up" delay={0.1}>
             <ColumnHeading icon="ri-graduation-cap-line" title="Education" />
             
@@ -155,7 +139,6 @@ export default function ResumeSection() {
             </div>
           </AnimatedSection>
 
-          {/* EXPERIENCE COLUMN */}
           <AnimatedSection variant="fade-up" delay={0.2}>
             <ColumnHeading icon="ri-briefcase-4-line" title="Experience" />
             
@@ -176,7 +159,6 @@ export default function ResumeSection() {
 
         </div>
 
-        
       </div>
     </section>
   );

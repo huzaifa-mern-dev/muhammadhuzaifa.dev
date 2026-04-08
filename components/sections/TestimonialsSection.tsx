@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * components/sections/TestimonialsSection.tsx
- *
- * A premium "Wall of Love" masonry layout displaying high-ticket architecture reviews.
- * Adheres strictly to the primary-2 lock and dark surface tokens.
- */
-
 import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 
@@ -35,7 +28,7 @@ export const testimonials = [
   {
     name: "Kreshnik Veseli",
     role: "Founder, parillis.ch",
-    platform: "Upwork", // Ya evidence ke hisaab se 'Direct' ya 'Fiverr' likh dein
+    platform: "Upwork",
     rating: 5,
     text: "Trustworthy, autonomous, and skilled in his field, Muhammed is the ideal freelancer to move my projects forward or for long-term hiring. He knows how to show understanding and unparalleled politeness."
   },
@@ -51,7 +44,7 @@ export const testimonials = [
     role: "Founder, neroli-studio.ch",
     platform: "Upwork", 
     rating: 5,
-    text: "Perfect. Muhammed listened and finished the job successfully." // Ek hi client ke 2 chote messages maine single solid review bananay ke liye merge kar diye evidence ke sath.
+    text: "Perfect. Muhammed listened and finished the job successfully."
   },
   
   {
@@ -115,7 +108,6 @@ export default function TestimonialsSection() {
       className="relative py-24 lg:py-32 overflow-hidden bg-transparent"
       aria-labelledby="testimonials-heading"
     >
-      {/* Background Soft Glows */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full bg-primary-2/[0.03] dark:bg-primary-2/[0.04] blur-3xl opacity-50"
@@ -123,7 +115,6 @@ export default function TestimonialsSection() {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-7xl">
         
-        {/* Header Block */}
         <AnimatedSection variant="fade-up" className="mb-16 lg:mb-24">
           <div className="text-center">
             <SectionLabel />
@@ -145,7 +136,6 @@ export default function TestimonialsSection() {
           </div>
         </AnimatedSection>
 
-        {/* CSS Masonry Layout */}
         <div className="columns-1 md:columns-2 lg:columns-3 gap-6 lg:gap-8 space-y-6 lg:space-y-8">
           {testimonials.map((t, i) => (
             <motion.div
@@ -163,7 +153,6 @@ export default function TestimonialsSection() {
                 "transition-all duration-300"
               ].join(" ")}
             >
-              {/* Decorative Giant Quote Background */}
               <i className="ri-double-quotes-r absolute -right-4 -bottom-6 text-[140px] text-gray-900/[0.02] dark:text-white/[0.02] group-hover:text-primary-2/[0.05] dark:group-hover:text-primary-2/[0.04] transition-colors duration-500 pointer-events-none transform rotate-6" />
               
               <StarRating />

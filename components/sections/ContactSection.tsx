@@ -1,23 +1,10 @@
 'use client';
-/**
- * components/sections/ContactSection.tsx — Interactive Client Component
- *
- * Features:
- *  - Calls the submitContactForm Server Action on submit
- *  - Inline validation with field-level error messages
- *  - Animated success state (no external toast library needed)
- *  - Premium form styling: focus rings, dark/light token parity
- *  - Loading spinner on submit button while action is in flight
- *  - Fully accessible: aria-invalid, aria-describedby, role="alert"
- */
 
 import { useState, useTransition, FormEvent } from 'react';
 import { submitContactForm, type ContactFormData } from '@/app/actions/contact';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
 type FieldErrors = Partial<Record<keyof ContactFormData, string>>;
 
-// ─── Section Label ────────────────────────────────────────────────────────────
 function SectionLabel() {
   return (
     <div className="flex items-center gap-2 mb-4">
@@ -29,7 +16,6 @@ function SectionLabel() {
   );
 }
 
-// ─── Reusable Input ──────────────────────────────────────────────────────────
 function FormInput({
   id,
   label,
@@ -97,7 +83,6 @@ function FormInput({
   );
 }
 
-// ─── Reusable Textarea ────────────────────────────────────────────────────────
 function FormTextarea({
   id,
   label,
@@ -162,7 +147,6 @@ function FormTextarea({
   );
 }
 
-// ─── Success Banner ───────────────────────────────────────────────────────────
 function SuccessBanner({ onReset }: { onReset: () => void }) {
   return (
     <div
@@ -170,7 +154,6 @@ function SuccessBanner({ onReset }: { onReset: () => void }) {
       aria-live="polite"
       className="flex flex-col items-center justify-center gap-6 py-16 text-center"
     >
-      {/* Animated checkmark circle */}
       <div className="relative w-20 h-20">
         <div className="absolute inset-0 rounded-full bg-[#62a92b]/10 dark:bg-[#62a92b]/10 animate-ping" />
         <div className="relative w-20 h-20 rounded-full bg-[#62a92b]/15 dark:bg-[#62a92b]/15 border border-[#62a92b]/30 dark:border-[#62a92b]/30 flex items-center justify-center">
@@ -198,7 +181,6 @@ function SuccessBanner({ onReset }: { onReset: () => void }) {
   );
 }
 
-// ─── Contact Info Card ────────────────────────────────────────────────────────
 function ContactInfo() {
   const items = [
     { icon: 'ri-mail-line',          label: 'Email',    value: 'huzaifamerndev@gmail.com', href: 'mailto:huzaifamerndev@gmail.com' },
@@ -234,7 +216,6 @@ function ContactInfo() {
         </div>
       ))}
 
-      {/* Availability badge */}
       <div className="mt-4 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#62a92b]/8 dark:bg-[#62a92b]/8 border border-[#62a92b]/20 dark:border-[#62a92b]/20">
         <span className="w-2 h-2 rounded-full bg-[#62a92b] dark:bg-[#62a92b] animate-pulse" />
         <span className="text-xs font-mono text-[#62a92b] dark:text-[#62a92b]">
@@ -245,22 +226,18 @@ function ContactInfo() {
   );
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
 export default function ContactSection() {
-  // Form state
   const [name,    setName]    = useState('');
   const [email,   setEmail]   = useState('');
   const [phone,   setPhone]   = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
 
-  // UI state
   const [errors,    setErrors]    = useState<FieldErrors>({});
   const [serverErr, setServerErr] = useState<string | null>(null);
   const [succeeded, setSucceeded] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  // Client-side field validation
   function validate(): FieldErrors {
     const errs: FieldErrors = {};
     if (!name.trim())    errs.name    = 'Your name is required.';
@@ -307,20 +284,17 @@ export default function ContactSection() {
       className="relative py-24 overflow-hidden"
       aria-labelledby="contact-heading"
     >
-      {/* Background grid */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:48px_48px]"
       />
 
-      {/* Top glow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-[#62a92b]/[0.04] dark:bg-[#62a92b]/[0.04] blur-3xl"
       />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* ── Heading ─────────────────────────────────────────────────────── */}
         <div className="text-center mb-14">
           <div className="flex items-center justify-center gap-2 mb-4">
             <div className="h-px w-8 bg-[#62a92b]/40 dark:bg-[#62a92b]/40" />
@@ -342,9 +316,7 @@ export default function ContactSection() {
           </p>
         </div>
 
-        {/* ── Two-column Layout ────────────────────────────────────────────── */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 max-w-5xl mx-auto">
-          {/* Left — contact info */}
           <div className="lg:col-span-2 flex flex-col justify-center">
             <SectionLabel />
             <h3 className="text-xl font-bold font-sans text-gray-900 dark:text-white mb-6">
@@ -353,7 +325,6 @@ export default function ContactSection() {
             <ContactInfo />
           </div>
 
-          {/* Right — form */}
           <div className="lg:col-span-3">
             <div className="p-7 sm:p-8 rounded-2xl bg-white dark:bg-[#1e1e27] border border-gray-200/70 dark:border-white/[0.07] shadow-[0_2px_16px_rgba(0,0,0,0.06)] dark:shadow-none">
               {succeeded ? (
@@ -365,7 +336,6 @@ export default function ContactSection() {
                   noValidate
                   aria-label="Contact form"
                 >
-                  {/* Server-level error */}
                   {serverErr && (
                     <div
                       role="alert"
@@ -376,7 +346,6 @@ export default function ContactSection() {
                     </div>
                   )}
 
-                  {/* Name + Email row */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <FormInput
                       id="contact-name"
@@ -401,7 +370,6 @@ export default function ContactSection() {
                     />
                   </div>
 
-                  {/* Phone + Subject row */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <FormInput
                       id="contact-phone"
@@ -423,7 +391,6 @@ export default function ContactSection() {
                     />
                   </div>
 
-                  {/* Message */}
                   <FormTextarea
                     id="contact-message"
                     label="Message"
@@ -435,7 +402,6 @@ export default function ContactSection() {
                     rows={5}
                   />
 
-                  {/* Submit */}
                   <button
                     type="submit"
                     disabled={isPending}
@@ -451,7 +417,6 @@ export default function ContactSection() {
                   >
                     {isPending ? (
                       <>
-                        {/* Spinner */}
                         <svg
                           className="animate-spin h-4 w-4"
                           xmlns="http://www.w3.org/2000/svg"

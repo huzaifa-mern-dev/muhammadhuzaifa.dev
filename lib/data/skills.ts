@@ -1,14 +1,7 @@
-/**
- * lib/data/skills.ts
- * All skill data used by SkillsSection.tsx marquee rows.
- * Row 1 scrolls left, Row 2 scrolls right.
- */
 
 export interface Skill {
   name: string;
-  /** Remix Icon class name — e.g. "ri-reactjs-line" */
   icon: string;
-  /** Tailwind hex or token colour for the icon */
   color: string;
 }
 

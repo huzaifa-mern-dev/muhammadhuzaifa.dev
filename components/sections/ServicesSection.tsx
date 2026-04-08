@@ -1,13 +1,5 @@
 "use client";
 
-/**
- * components/sections/ServicesSection.tsx
- *
- * Modern Bento Grid variant with dynamic CSS Grid spanning.
- * Completely strictly adhered to locked typography and primary-2 neon green tokens.
- * Client component to support Framer Motion interactions via whileHover.
- */
-
 import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 
@@ -56,21 +48,20 @@ const services = [
   }
 ];
 
-// Helper to determine Grid Spans for the Bento Box layout
 function getBentoClass(index: number) {
   switch (index) {
     case 0:
-      return "md:col-span-2 lg:col-span-2"; // Top row: big left
+      return "md:col-span-2 lg:col-span-2";
     case 1:
-      return "md:col-span-1 lg:col-span-1"; // Top row: small right
+      return "md:col-span-1 lg:col-span-1";
     case 2:
-      return "md:col-span-1 lg:col-span-1"; // Mid row: small left
+      return "md:col-span-1 lg:col-span-1";
     case 3:
-      return "md:col-span-2 lg:col-span-2"; // Mid row: big right
+      return "md:col-span-2 lg:col-span-2";
     case 4:
-      return "md:col-span-2 lg:col-span-2"; // Bottom row: big left
+      return "md:col-span-2 lg:col-span-2";
     case 5:
-      return "md:col-span-1 lg:col-span-1"; // Bottom row: small right
+      return "md:col-span-1 lg:col-span-1";
     default:
       return "col-span-1";
   }
@@ -95,20 +86,17 @@ export default function ServicesSection() {
       className="relative py-24 lg:py-32 overflow-hidden"
       aria-labelledby="services-heading"
     >
-      {/* Subtle background grid */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:48px_48px]"
       />
 
-      {/* Radial soft glow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-primary-2/[0.03] dark:bg-primary-2/[0.04] blur-3xl opacity-50"
       />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full max-w-7xl">
-        {/* Enforced Centered Heading with under-stroke SVG match */}
         <AnimatedSection variant="fade-up">
           <div className="text-center mb-14 lg:mb-20">
             <SectionLabel />
@@ -130,7 +118,6 @@ export default function ServicesSection() {
           </div>
         </AnimatedSection>
 
-        {/* Bento Box Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5 lg:gap-6">
           {services.map((service, index) => (
             <AnimatedSection 
@@ -143,7 +130,6 @@ export default function ServicesSection() {
                 whileHover={{ y: -5 }}
                 className={[
                   "group h-full flex flex-col items-start gap-5 p-6 lg:p-8 rounded-2xl relative overflow-hidden",
-                  // Strict dark component token
                   "bg-white dark:bg-[#272730]",
                   "border border-gray-200 dark:border-white/5",
                   "shadow-[0_2px_8px_rgba(0,0,0,0.04)] dark:shadow-none",
@@ -151,7 +137,6 @@ export default function ServicesSection() {
                   "hover:border-primary-2 dark:hover:border-primary-2"
                 ].join(" ")}
               >
-                {/* Subtle Hover Glow Layer */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-primary-2/5 dark:bg-primary-2/[0.04]" />
                 
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-primary-2/10 dark:bg-primary-2/10 border border-primary-2/20 text-primary-2 flex-shrink-0 transition-colors group-hover:bg-primary-2/20">
@@ -166,7 +151,6 @@ export default function ServicesSection() {
                   {service.description}
                 </p>
 
-                {/* Tech Tags / Pills Container */}
                 <div className="flex flex-wrap gap-2 mt-auto pt-6 w-full relative z-10 border-t border-gray-100 dark:border-white/5">
                   {service.highlights.map((tag) => (
                     <span 
@@ -182,7 +166,6 @@ export default function ServicesSection() {
           ))}
         </div>
 
-        {/* CTA */}
         <AnimatedSection variant="fade-up" delay={0.4}>
           <div className="text-center mt-16">
             <p className="text-sm font-sans text-gray-400 dark:text-[#a1a1aa] mb-4">

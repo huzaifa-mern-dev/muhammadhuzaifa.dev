@@ -1,18 +1,6 @@
-/**
- * components/sections/SkillsSection.tsx — Skills Marquee
- *
- * Two infinite-scrolling rows driven by the `marquee-left` / `marquee-right`
- * @keyframes already defined in globals.css and wired in tailwind.config.ts.
- *
- * Each row renders its items TWICE so the seam is invisible (the `-50%`
- * translateX trick). No JS Required — pure CSS animation via Tailwind utilities.
- *
- * Can be a Server Component because it has no hooks or interactivity.
- */
 
 import { skillsRowOne, skillsRowTwo, type Skill } from '@/lib/data/skills';
 
-// ─── Section Label ────────────────────────────────────────────────────────────
 function SectionLabel() {
   return (
     <div className="flex items-center justify-center gap-2 mb-4">
@@ -25,7 +13,6 @@ function SectionLabel() {
   );
 }
 
-// ─── Individual Skill Badge ───────────────────────────────────────────────────
 function SkillBadge({ skill }: { skill: Skill }) {
   return (
     <div
@@ -52,12 +39,6 @@ function SkillBadge({ skill }: { skill: Skill }) {
   );
 }
 
-// ─── Marquee Row ─────────────────────────────────────────────────────────────
-/**
- * @param skills   — the items to scroll
- * @param direction — 'left' → animate-marquee-left | 'right' → animate-marquee-right
- * @param label     — accessible description
- */
 function MarqueeRow({
   skills,
   direction,
@@ -67,7 +48,6 @@ function MarqueeRow({
   direction: 'left' | 'right';
   label: string;
 }) {
-  // Duplicate items so the scroll loop is seamless
   const doubled = [...skills, ...skills];
   const animClass =
     direction === 'left' ? 'animate-marquee-left' : 'animate-marquee-right';
@@ -78,7 +58,6 @@ function MarqueeRow({
       role="list"
       aria-label={label}
     >
-      {/* Left + right fade masks */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-y-0 left-0 w-20 z-10 bg-gradient-to-r from-gray-50 dark:from-[#272730] to-transparent"
@@ -88,7 +67,6 @@ function MarqueeRow({
         className="pointer-events-none absolute inset-y-0 right-0 w-20 z-10 bg-gradient-to-l from-gray-50 dark:from-[#272730] to-transparent"
       />
 
-      {/* The scrolling track */}
       <div
         className={`flex w-max ${animClass} [animation-play-state:running] hover:[animation-play-state:paused]`}
         style={{ willChange: 'transform' }}
@@ -103,7 +81,6 @@ function MarqueeRow({
   );
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
 export default function SkillsSection() {
   return (
     <section
@@ -111,20 +88,17 @@ export default function SkillsSection() {
       className="relative py-10 overflow-hidden"
       aria-labelledby="skills-heading"
     >
-      {/* Subtle background grid */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:48px_48px]"
       />
 
-      {/* Bottom radial glow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full bg-[#62a92b]/[0.03] dark:bg-[#62a92b]/[0.04] blur-3xl"
       />
 
       <div className="relative z-10">
-        {/* ── Heading ─────────────────────────────────────────────────────── */}
         {/* <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center mb-14">
           <SectionLabel />
           <h2
@@ -140,7 +114,6 @@ export default function SkillsSection() {
           </p>
         </div> */}
 
-        {/* ── Marquee Rows ────────────────────────────────────────────────── */}
         <div className="flex flex-col gap-5 py-4">
           <MarqueeRow
             skills={skillsRowOne}
@@ -154,7 +127,6 @@ export default function SkillsSection() {
           />
         </div>
 
-        {/* ── Stats strip ─────────────────────────────────────────────────── */}
         {/* <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-14">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[

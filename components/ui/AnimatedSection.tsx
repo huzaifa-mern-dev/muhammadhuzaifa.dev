@@ -1,24 +1,7 @@
 'use client';
-/**
- * components/ui/AnimatedSection.tsx
- *
- * Reusable scroll-triggered animation wrapper using Framer Motion.
- * Replaces AOS / WOW.js — pure React, SSR-safe, no window.addEventListener setup.
- *
- * Usage:
- *   <AnimatedSection variant="fade-up" delay={0.1}>
- *     <MyCard />
- *   </AnimatedSection>
- *
- * Framer Motion's `whileInView` only fires in the browser so there is no
- * "window is not defined" risk even in App Router Server Components that
- * import Client Components.
- */
 
 import { motion, type Variants, type HTMLMotionProps } from 'framer-motion';
 import type { ReactNode } from 'react';
-
-// ─── Animation Presets ───────────────────────────────────────────────────────
 
 type AnimationVariant =
   | 'fade-up'
@@ -30,7 +13,7 @@ type AnimationVariant =
   | 'zoom-out'
   | 'flip-up';
 
-const DISTANCE = 32; // px offset for directional variants
+const DISTANCE = 32;
 
 const variantMap: Record<AnimationVariant, Variants> = {
   'fade-up': {
@@ -67,29 +50,16 @@ const variantMap: Record<AnimationVariant, Variants> = {
   },
 };
 
-// ─── Props ───────────────────────────────────────────────────────────────────
-
 interface AnimatedSectionProps
   extends Omit<HTMLMotionProps<'div'>, 'variants' | 'initial' | 'whileInView' | 'animate'> {
   children: ReactNode;
-  /** Which preset animation to use. Default: 'fade-up' */
   variant?: AnimationVariant;
-  /** Seconds to delay the animation start. Useful for stagger sequences. */
   delay?: number;
-  /** Animation duration in seconds. Default: 0.55 */
   duration?: number;
-  /**
-   * Fraction of the element that must be visible before triggering (0–1).
-   * Default: 0.15 (fires when 15% of the element is in view).
-   */
   threshold?: number;
-  /** Whether to animate only the first time it enters view. Default: true */
   once?: boolean;
-  /** Use a semantic element other than div */
   as?: 'div' | 'section' | 'article' | 'aside' | 'li' | 'span';
 }
-
-// ─── Component ───────────────────────────────────────────────────────────────
 
 export default function AnimatedSection({
   children,
@@ -113,7 +83,7 @@ export default function AnimatedSection({
       transition={{
         duration,
         delay,
-        ease: [0.25, 0.46, 0.45, 0.94], // ease-out-quart — buttery smooth
+        ease: [0.25, 0.46, 0.45, 0.94],
       }}
       className={className}
       {...rest}
@@ -123,17 +93,6 @@ export default function AnimatedSection({
   );
 }
 
-// ─── Stagger Container ───────────────────────────────────────────────────────
-/**
- * Wraps a group of <AnimatedSection> children and staggers them automatically.
- * Each direct child will be delayed by `staggerDelay` seconds.
- *
- * Usage:
- *   <StaggerContainer staggerDelay={0.1}>
- *     <AnimatedSection><Card /></AnimatedSection>
- *     <AnimatedSection><Card /></AnimatedSection>
- *   </StaggerContainer>
- */
 export function StaggerContainer({
   children,
   staggerDelay = 0.08,

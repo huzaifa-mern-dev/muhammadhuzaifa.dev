@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * components/layout/MobileMenu.tsx — Theme-Aware
- *
- * Changes from Phase 2:
- *  - Drawer bg: bg-white dark:bg-[#1e1e27]
- *  - All text, borders, icons: full light/dark pairs
- *  - Backdrop: bg-black/50 (unchanged — works in both modes)
- *  - Accent buttons adapted per theme
- */
-
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 
@@ -49,7 +39,6 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
   return (
     <>
-      {/* ── Backdrop ───────────────────────────────────────────── */}
       <div
         aria-hidden="true"
         onClick={onClose}
@@ -61,7 +50,6 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         ].join(" ")}
       />
 
-      {/* ── Drawer ─────────────────────────────────────────────── */}
       <aside
         role="dialog"
         aria-modal="true"
@@ -75,7 +63,6 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           isOpen ? "translate-x-0" : "-translate-x-full",
         ].join(" ")}
       >
-        {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200 dark:border-white/5">
           <Link
             href="/"
@@ -104,7 +91,6 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           </button>
         </div>
 
-        {/* Navigation links */}
         <nav className="flex-1 overflow-y-auto px-4 py-6">
           <p className="text-[10px] font-mono uppercase text-gray-400 dark:text-[#636366] tracking-widest px-3 mb-4">
             Navigation
@@ -142,7 +128,6 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           </ul>
         </nav>
 
-        {/* Footer CTA */}
         <div className="px-6 py-5 border-t border-gray-200 dark:border-white/5">
           <a
             href="/#contact"

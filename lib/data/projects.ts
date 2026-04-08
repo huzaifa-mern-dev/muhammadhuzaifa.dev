@@ -1,22 +1,17 @@
-/**
- * lib/data/projects.ts
- * All portfolio project data (migrated from hardcoded Swiper slides in index.html).
- * Used by PortfolioSection.tsx to render slides dynamically.
- */
 
 export interface Project {
   id: string;
   title: string;
   subtitle?: string;
-  description: string; // short description
-  fullDescription?: string; // used for the new interactive modal
-  features?: string[]; // used for the new interactive modal
+  description: string;
+  fullDescription?: string;
+  features?: string[];
   technologies: string[];
-  image: string; // cover image path
-  images?: string[]; // carousel images path
+  image: string;
+  images?: string[];
   liveUrl?: string;
   githubUrl?: string;
-  categories?: string[]; // New field for dynamic portfolio tabs
+  categories?: string[];
 }
 
 export const projects: Project[] = [

@@ -1,20 +1,11 @@
 "use client";
 
-/**
- * components/ui/ScrollToTop.tsx
- *
- * Fixed bottom-right button with an SVG progress ring that fills up
- * as the user scrolls down the page. Clicking it scrolls smoothly back to top.
- * Hidden while at the very top of the page.
- */
-
 import { useEffect, useState, useCallback } from "react";
 
-// Square path dimensions — matches the 40×40 viewBox from the original site
 const SIZE = 40;
 const STROKE = 2.5;
-const RADIUS = (SIZE - STROKE) / 2; // 18.75
-const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // ≈117.8
+const RADIUS = (SIZE - STROKE) / 2;
+const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 export default function ScrollToTop() {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -35,7 +26,7 @@ export default function ScrollToTop() {
 
   useEffect(() => {
     window.addEventListener("scroll", calculateScroll, { passive: true });
-    calculateScroll(); // run once on mount
+    calculateScroll();
     return () => window.removeEventListener("scroll", calculateScroll);
   }, [calculateScroll]);
 
@@ -43,8 +34,6 @@ export default function ScrollToTop() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // dashoffset = full circumference means 0% fill,
-  // 0 means 100% fill
   const dashOffset = CIRCUMFERENCE * (1 - scrollProgress);
 
   return (
@@ -60,13 +49,11 @@ export default function ScrollToTop() {
           : "opacity-0 translate-y-4 pointer-events-none",
       ].join(" ")}
     >
-      {/* Progress ring SVG */}
       <svg
         className="absolute inset-0 w-full h-full -rotate-90"
         viewBox={`0 0 ${SIZE} ${SIZE}`}
         fill="none"
       >
-        {/* Track (background ring) */}
         <rect
           x={STROKE / 2}
           y={STROKE / 2}
@@ -77,7 +64,6 @@ export default function ScrollToTop() {
           strokeWidth={STROKE}
           fill="#272730"
         />
-        {/* Progress ring (accent colour) */}
         <rect
           x={STROKE / 2}
           y={STROKE / 2}
@@ -94,7 +80,6 @@ export default function ScrollToTop() {
         />
       </svg>
 
-      {/* Arrow icon */}
       <i className="ri-arrow-up-line text-white text-base z-10" />
     </button>
   );

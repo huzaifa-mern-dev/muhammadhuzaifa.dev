@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * components/layout/OffcanvasInfo.tsx — Theme-Aware
- *
- * Changes from Phase 2:
- *  - Drawer bg: bg-white dark:bg-[#1e1e27]
- *  - All dividers, text colours, icon boxes: full light/dark pairs
- *  - Stat boxes, skill tags, social buttons: correctly themed
- *  - CTA buttons: green/white in light, lime/dark in dark
- */
-
 import { useEffect } from "react";
 import Link from "next/link";
 
@@ -54,7 +44,6 @@ export default function OffcanvasInfo({ isOpen, onClose }: OffcanvasInfoProps) {
 
   return (
     <>
-      {/* ── Backdrop ───────────────────────────────────────────── */}
       <div
         aria-hidden="true"
         onClick={onClose}
@@ -66,7 +55,6 @@ export default function OffcanvasInfo({ isOpen, onClose }: OffcanvasInfoProps) {
         ].join(" ")}
       />
 
-      {/* ── Drawer (right) ─────────────────────────────────────── */}
       <aside
         role="dialog"
         aria-modal="true"
@@ -80,7 +68,6 @@ export default function OffcanvasInfo({ isOpen, onClose }: OffcanvasInfoProps) {
           isOpen ? "translate-x-0" : "translate-x-full",
         ].join(" ")}
       >
-        {/* ── Header ─────────────────────────────────────────────── */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200 dark:border-white/5 flex-shrink-0">
           <div>
             <p className="text-[10px] font-mono uppercase text-gray-400 dark:text-[#636366] tracking-widest mb-0.5">
@@ -108,10 +95,8 @@ export default function OffcanvasInfo({ isOpen, onClose }: OffcanvasInfoProps) {
           </button>
         </div>
 
-        {/* ── Body ───────────────────────────────────────────────── */}
         <div className="flex-1 px-6 py-6 flex flex-col gap-7">
 
-          {/* Availability */}
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#62a92b] dark:bg-[#62a92b] animate-pulse flex-shrink-0" />
             <span className="text-xs font-sans text-gray-500 dark:text-[#8f8f92]">
@@ -119,7 +104,6 @@ export default function OffcanvasInfo({ isOpen, onClose }: OffcanvasInfoProps) {
             </span>
           </div>
 
-          {/* Stats */}
           <div className="grid grid-cols-3 gap-3">
             {STATS.map(({ value, label }) => (
               <div
@@ -136,7 +120,6 @@ export default function OffcanvasInfo({ isOpen, onClose }: OffcanvasInfoProps) {
             ))}
           </div>
 
-          {/* Contact */}
           <div className="flex flex-col gap-3">
             <p className="text-[10px] font-mono uppercase text-gray-400 dark:text-[#636366] tracking-widest">
               Contact Info
@@ -174,7 +157,6 @@ export default function OffcanvasInfo({ isOpen, onClose }: OffcanvasInfoProps) {
             ))}
           </div>
 
-          {/* Skills */}
           <div className="flex flex-col gap-3">
             <p className="text-[10px] font-mono uppercase text-gray-400 dark:text-[#636366] tracking-widest">
               Core Stack
@@ -191,7 +173,6 @@ export default function OffcanvasInfo({ isOpen, onClose }: OffcanvasInfoProps) {
             </div>
           </div>
 
-          {/* Social */}
           <div className="flex flex-col gap-3">
             <p className="text-[10px] font-mono uppercase text-gray-400 dark:text-[#636366] tracking-widest">
               Find me on
@@ -220,7 +201,6 @@ export default function OffcanvasInfo({ isOpen, onClose }: OffcanvasInfoProps) {
           </div>
         </div>
 
-        {/* ── Footer CTA ─────────────────────────────────────────── */}
         <div className="px-6 py-5 border-t border-gray-200 dark:border-white/5 flex-shrink-0">
           <Link
             href="/#contact"

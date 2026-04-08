@@ -1,18 +1,8 @@
-/* ==========================================================================
-   globals.css — Huzaifa.dev Next.js Migration
-   Order: Tailwind directives → CSS variables bridge → global resets → keyframes → utilities
-   ========================================================================== */
 
-/* ── 1. Tailwind Directives ─────────────────────────────────────────────── */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ── 2. CSS Custom Property Bridge ─────────────────────────────────────────
-   These vars are used by components that still reference the original
-   --tc-* tokens during the transitional coexistence period (Phase B).
-   Once the full Tailwind conversion is complete (Phase C), remove this block.
-   ─────────────────────────────────────────────────────────────────────────── */
 @layer base {
   :root {
     /* ── Brand Colors (light mode) ── */

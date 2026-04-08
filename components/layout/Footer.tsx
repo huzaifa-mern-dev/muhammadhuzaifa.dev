@@ -1,9 +1,5 @@
 "use client";
 
-/**
- * components/layout/Footer.tsx — Premium Aesthetic SPA Footer
- */
-
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -26,17 +22,14 @@ export default function Footer() {
   return (
     <footer className="relative bg-gray-50 dark:bg-[#1a1a24] pt-32 pb-24 md:pb-10 px-6 md:px-12 overflow-hidden">
       
-      {/* ── 1. The Marquee / Oversized Typography ── */}
       <div className="w-full text-center relative z-0">
         <h2 className="text-[16vw] md:text-[8vw] font-black font-sans tracking-tighter leading-[0.85] md:leading-none opacity-5 dark:opacity-10 text-gray-900 dark:text-white select-none">
           LET'S BUILD<br className="md:hidden" /> ALONG.
         </h2>
       </div>
 
-      {/* ── 2. Minimalist Content Grid ── */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-12 mt-16 md:-mt-8 relative z-10 max-w-7xl mx-auto">
         
-        {/* Left Column (Span 5): Brand & Mission */}
         <div className="md:col-span-5 flex flex-col gap-6">
           <Link href="/" className="flex items-center gap-3 group w-fit" aria-label="Huzaifa.dev home">
             <Image
@@ -55,7 +48,6 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Center Column (Span 4): Navigation */}
         <div className="md:col-span-4 flex flex-col">
           <h3 className="text-gray-900 dark:text-white font-sans font-bold uppercase tracking-widest text-xs mb-6 opacity-60">
             Quick Links
@@ -80,7 +72,6 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Right Column (Span 3): Socials & Action */}
         <div className="md:col-span-3 flex flex-col md:items-end md:text-right">
           <h3 className="text-gray-900 dark:text-white font-sans font-bold uppercase tracking-widest text-xs mb-6 opacity-60">
             Connect With Me
@@ -111,7 +102,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* ── 3. The Grand Finale Bar (Bottom) ── */}
       <div className="border-t border-gray-200 dark:border-white/10 mt-20 pt-8 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
         <p className="text-xs md:text-sm font-sans text-gray-500 font-medium">
           © {new Date().getFullYear()} Muhammad Huzaifa. Local time in Pakistan: Pakistan Standard Time (PKT).

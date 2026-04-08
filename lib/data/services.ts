@@ -1,19 +1,11 @@
-/**
- * lib/data/services.ts
- * Service card data — migrated from the 6 hardcoded service cards in index.html.
- * Used by ServicesSection.tsx (Server Component — no JS needed here).
- */
 
-// SVG path data extracted from inline SVGs in index.html
 export interface Service {
   id: string;
   title: string;
   description: string;
-  /** SVG viewBox — default "0 0 24 24" */
   iconViewBox?: string;
-  /** SVG path `d` attribute (fill is applied at the component level) */
   iconPath: string;
-  highlights: string[]; // Technology keywords to highlight in green
+  highlights: string[];
 }
 
 export const services: Service[] = [

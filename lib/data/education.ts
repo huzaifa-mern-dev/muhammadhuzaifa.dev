@@ -1,8 +1,3 @@
-/**
- * lib/data/education.ts
- * Education & certification timeline data.
- * Refactored for punchy bullet points.
- */
 
 export interface EducationEntry {
   id: string;

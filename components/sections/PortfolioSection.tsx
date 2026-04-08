@@ -1,12 +1,4 @@
 'use client';
-/**
- * components/sections/PortfolioSection.tsx — Interactive Client Component
- *
- * Features:
- *  - Swiper carousel with coverflow effect, loop, and autoplay
- *  - Premium Framer Motion interactive project modal (Split Layout)
- *  - Deep theme awareness with primary-2 targeted accents
- */
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
@@ -15,7 +7,6 @@ import { Autoplay, EffectCoverflow, Navigation, Pagination, Keyboard } from 'swi
 import type { Swiper as SwiperType } from 'swiper';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Swiper Core CSS
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/navigation';
@@ -23,7 +14,6 @@ import 'swiper/css/pagination';
 
 import { projects, type Project } from '@/lib/data/projects';
 
-// ─── Section Label ────────────────────────────────────────────────────────────
 function SectionLabel() {
   return (
     <div className="flex items-center justify-center gap-2 mb-4">
@@ -36,7 +26,6 @@ function SectionLabel() {
   );
 }
 
-// ─── Technology Tag ───────────────────────────────────────────────────────────
 function TechTag({ label }: { label: string }) {
   return (
     <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-gray-100 dark:bg-white/[0.05] text-gray-500 dark:text-[#8f8f92] border border-gray-200 dark:border-white/[0.07]">
@@ -45,7 +34,6 @@ function TechTag({ label }: { label: string }) {
   );
 }
 
-// ─── Modal Nested Carousel ────────────────────────────────────────────────────
 function ModalCarousel({ images, alt }: { images: string[], alt: string }) {
   const [index, setIndex] = useState(0);
 
@@ -69,7 +57,6 @@ function ModalCarousel({ images, alt }: { images: string[], alt: string }) {
         priority
       />
       
-      {/* Absolute Gradient overlay to ensure arrows and dots are visible over light images */}
       <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
       
       {images.length > 1 && (
@@ -103,25 +90,21 @@ function ModalCarousel({ images, alt }: { images: string[], alt: string }) {
   );
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
 export default function PortfolioSection() {
   const [activeTab, setActiveTab] = useState('All');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const swiperRef = useRef<SwiperType | null>(null);
 
-  // 1. Data Extraction (Unique Categories)
   const allCategories = [
     "All",
     ...Array.from(new Set(projects.flatMap((project) => project.categories || []).filter(Boolean)))
   ];
 
-  // 3. Filtering Logic (Verification)
   const filteredProjects = projects.filter((p) => {
     if (activeTab === 'All') return true;
     return p.categories?.includes(activeTab);
   });
 
-  // Lock body scroll when modal is active
   useEffect(() => {
     if (selectedProject) {
       document.body.style.overflow = "hidden";
@@ -137,20 +120,17 @@ export default function PortfolioSection() {
       className="relative py-24 overflow-hidden"
       aria-labelledby="portfolio-heading"
     >
-      {/* Subtle background grid */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:48px_48px]"
       />
 
-      {/* Radial accent glow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-[#62a92b]/[0.04] dark:bg-[#62a92b]/[0.04] blur-3xl"
       />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-7xl">
-        {/* ── Heading ─────────────────────────────────────────────────────── */}
         <div className="text-center mb-14">
           <SectionLabel />
           <h2
@@ -171,7 +151,6 @@ export default function PortfolioSection() {
           </p>
         </div>
 
-        {/* ── Filter Tabs ─────────────────────────────────────────────────── */}
         <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
           {allCategories.map((category) => (
             <button
@@ -194,7 +173,6 @@ export default function PortfolioSection() {
           ))}
         </div>
 
-        {/* ── Swiper Carousel ─────────────────────────────────────────────── */}
         <div className="relative portfolio-swiper-wrapper max-w-full overflow-visible">
           <Swiper
             key={activeTab}
@@ -255,15 +233,12 @@ export default function PortfolioSection() {
                       }
                     }}
                   >
-                    {/* ── GPU-Accelerated Shadow Layer ── */}
                     <div 
                       className="absolute inset-0 rounded-3xl shadow-[0_8px_40px_rgba(98,169,43,0.15)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out z-0 pointer-events-none"
                       aria-hidden="true"
                     />
 
-                    {/* ── Content Wrapper to maintain z-index above shadow ── */}
                     <div className="relative z-10 w-full h-full flex flex-col rounded-3xl overflow-hidden">
-                      {/* ── Card Image Header ───────────────────────────────── */}
                       <div className="relative w-full aspect-[16/11] overflow-hidden bg-gray-100 dark:bg-black/20">
                         <Image
                           src={project.image}
@@ -274,7 +249,6 @@ export default function PortfolioSection() {
                           priority={i < 3}
                         />
 
-                        {/* Hover Overlay indicating click action */}
                         <div className="absolute inset-0 bg-primary-2/90 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-primary-2 shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
                             <i className="ri-add-line text-3xl font-bold" />
@@ -285,7 +259,6 @@ export default function PortfolioSection() {
                         </div>
                       </div>
 
-                      {/* ── Card Body ───────────────────────────────────────── */}
                       <div className="p-6 lg:p-8 text-left bg-white dark:bg-[#272730] relative z-10 flex-grow">
                         <div className="mb-4">
                           <h3 className="font-sans font-bold text-gray-900 dark:text-white text-xl md:text-2xl leading-tight">
@@ -318,7 +291,6 @@ export default function PortfolioSection() {
             ))}
           </Swiper>
 
-          {/* ── Custom Nav Buttons ───────────────────────────────────────── */}
           <button
             className="pf-btn-prev absolute left-0 top-[40%] -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white dark:bg-[#272730] border border-gray-200 dark:border-white/10 shadow-lg flex items-center justify-center text-gray-900 dark:text-white hover:border-primary-2 hover:bg-primary-2 hover:text-white transition-all duration-300 disabled:opacity-0 disabled:pointer-events-none"
             aria-label="Previous project"
@@ -334,7 +306,6 @@ export default function PortfolioSection() {
         </div>
       </div>
 
-      {/* ── Interactive Modal via Framer Motion ─────────────────────────── */}
       <AnimatePresence>
         {selectedProject && (
           <motion.div
@@ -344,14 +315,12 @@ export default function PortfolioSection() {
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 lg:p-8"
           >
-            {/* Backdrop */}
             <div 
               className="absolute inset-0 bg-gray-900/40 dark:bg-black/60 backdrop-blur-md cursor-pointer"
               onClick={() => setSelectedProject(null)}
               aria-hidden="true"
             />
             
-            {/* Modal Container */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -362,7 +331,6 @@ export default function PortfolioSection() {
               aria-modal="true"
               aria-labelledby="modal-title"
             >
-              {/* Close Button */}
               <button 
                 onClick={() => setSelectedProject(null)}
                 className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/5 dark:bg-white/10 hover:bg-red-500 hover:text-white border border-transparent dark:border-white/5 flex items-center justify-center transition-all duration-200 text-gray-500 dark:text-gray-300 shadow-sm"
@@ -373,7 +341,6 @@ export default function PortfolioSection() {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:h-full">
                 
-                {/* ── Left Column: Content ── */}
                 <div className="p-8 lg:p-12 xl:p-16 flex flex-col order-2 lg:order-1 border-t lg:border-t-0 lg:border-r border-gray-100 dark:border-white/5 bg-white dark:bg-[#1a1a22]">
                   <h3 id="modal-title" className="text-3xl lg:text-4xl font-bold font-sans text-gray-900 dark:text-white mb-2 leading-tight">
                     {selectedProject.title}
@@ -388,7 +355,6 @@ export default function PortfolioSection() {
                     {selectedProject.fullDescription || selectedProject.description}
                   </p>
 
-                  {/* Features List */}
                   {selectedProject.features && (
                     <div className="mb-8">
                       <h4 className="text-sm font-bold font-sans text-gray-900 dark:text-white uppercase tracking-wider mb-4 border-b border-gray-100 dark:border-white/5 pb-2">
@@ -407,7 +373,6 @@ export default function PortfolioSection() {
                     </div>
                   )}
 
-                  {/* Tech Stack */}
                   <div className="mb-10">
                     <h4 className="text-sm font-bold font-sans text-gray-900 dark:text-white uppercase tracking-wider mb-4 border-b border-gray-100 dark:border-white/5 pb-2">
                       Technologies
@@ -421,7 +386,6 @@ export default function PortfolioSection() {
                     </div>
                   </div>
 
-                  {/* CTAs */}
                   <div className="mt-auto flex flex-wrap gap-4 pt-4">
                     {selectedProject.liveUrl && (
                       <a 
@@ -448,7 +412,6 @@ export default function PortfolioSection() {
                   </div>
                 </div>
 
-                {/* ── Right Column: Image Carousel ── */}
                 <div className="order-1 lg:order-2 bg-gray-50 dark:bg-[#111116] w-full min-h-[300px]">
                   <ModalCarousel 
                     images={selectedProject.images || [selectedProject.image]} 
@@ -462,7 +425,6 @@ export default function PortfolioSection() {
         )}
       </AnimatePresence>
 
-      {/* ── Swiper pagination overrides ─────────────────────────────── */}
       <style jsx global>{`
         .portfolio-swiper-wrapper .swiper-pagination-bullet {
           background: #62a92b;

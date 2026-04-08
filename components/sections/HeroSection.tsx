@@ -1,15 +1,4 @@
 'use client';
-/**
- * components/sections/HeroSection.tsx
- *
- * Rebuilt Premium Consultancy Agency Hero
- * - Split-screen 2-column layout
- * - Clean background (no radial gradients)
- * - Upwork badge
- * - Typewriter effect for heading (multiple stacks)
- * - Profile image with morphing CSS clip-path animation + orbiting tech ecosystem
- * - AnimatedSection reveals preserved
- */
 
 import Image from 'next/image';
 import { TypeAnimation } from 'react-type-animation';
@@ -43,13 +32,10 @@ export default function HeroSection() {
       `}</style>
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        {/* 2-column split layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center w-full max-w-7xl mx-auto">
           
-          {/* ── Left Column: High-Converting Copywriter Content ── */}
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left pt-8 lg:pt-0">
             <AnimatedSection variant="fade-up" delay={0.1}>
-              {/* Upwork Top Rated Badge */}
               <div className="inline-flex items-center gap-2.5 text-xs font-mono mb-8 border rounded-full px-4 py-1.5 text-gray-700 border-gray-200 bg-white dark:text-gray-200 dark:border-white/10 dark:bg-white/5 shadow-sm">
                 <span className="flex h-2.5 w-2.5 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-2 opacity-75"></span>
@@ -90,7 +76,6 @@ export default function HeroSection() {
 
             <AnimatedSection variant="fade-up" delay={0.4}>
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full sm:w-auto">
-                {/* Primary CTA */}
                 <a
                   href="#contact"
                   className={[
@@ -107,7 +92,6 @@ export default function HeroSection() {
                   Book a Free Consultation
                 </a>
 
-                {/* Secondary CTA */}
                 <a
                   href="#portfolio"
                   className={[
@@ -127,16 +111,13 @@ export default function HeroSection() {
             </AnimatedSection>
           </div>
 
-          {/* ── Right Column: Morphing Profile & Orbiting Tech Ecosystem ── */}
           <div className="flex items-center justify-center lg:justify-end w-full relative h-[450px] lg:h-[550px]">
             <AnimatedSection variant="zoom-in" delay={0.2} className="relative w-full max-w-[450px] aspect-square flex items-center justify-center">
               
-              {/* Central Morphing Profile Image */}
               <div 
                 className="relative z-20 flex items-center justify-center w-72 h-72 lg:w-96 lg:h-96 overflow-hidden shadow-2xl border-[6px] border-white dark:border-white/10"
                 style={{ animation: 'morph 8s ease-in-out infinite' }}
               >
-                {/* Glow ring behind image */}
                 <div className="absolute inset-0 bg-primary-2/20 blur-xl z-0 pointer-events-none"></div>
                 
                 <Image
@@ -147,11 +128,9 @@ export default function HeroSection() {
                   className="object-cover relative z-10 transition-transform duration-700 hover:scale-110"
                   priority
                 />
-                {/* Overlay blend to tint image if needed */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-primary-2/10 to-transparent mix-blend-overlay pointer-events-none z-20" />
               </div>
 
-              {/* Orbit 1: React */}
               <div 
                 className="absolute top-[2%] left-[12%] w-14 h-14 bg-white dark:bg-white/5 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 dark:border-white/10 flex items-center justify-center z-30"
                 style={{ animation: 'float-fast 4s ease-in-out infinite' }}
@@ -159,7 +138,6 @@ export default function HeroSection() {
                 <i className="ri-reactjs-line text-3xl text-[#61DAFB]" />
               </div>
 
-              {/* Orbit 2: Node.js */}
               <div 
                 className="absolute bottom-[20%] left-[-2%] w-16 h-16 bg-white dark:bg-white/5 backdrop-blur-md rounded-full shadow-xl border border-gray-100 dark:border-white/10 flex items-center justify-center z-30"
                 style={{ animation: 'float-slow 7s ease-in-out infinite' }}
@@ -167,7 +145,6 @@ export default function HeroSection() {
                 <i className="ri-nodejs-line text-3xl text-[#339933]" />
               </div>
 
-              {/* Orbit 3: Tailwind CSS */}
               <div 
                 className="absolute top-[20%] right-[0%] w-14 h-14 bg-white dark:bg-white/5 backdrop-blur-md rounded-xl shadow-xl border border-gray-100 dark:border-white/10 flex items-center justify-center z-30"
                 style={{ animation: 'float-medium 5s ease-in-out infinite' }}
@@ -175,7 +152,6 @@ export default function HeroSection() {
                 <i className="ri-css3-line text-3xl text-[#38B2AC]" />
               </div>
 
-              {/* Orbit 4: WordPress */}
               <div 
                 className="absolute bottom-[5%] right-[15%] w-14 h-14 bg-white dark:bg-white/5 backdrop-blur-md rounded-full shadow-xl border border-gray-100 dark:border-white/10 flex items-center justify-center z-30"
                 style={{ animation: 'float-fast 6s ease-in-out infinite' }}
@@ -183,7 +159,6 @@ export default function HeroSection() {
                 <i className="ri-wordpress-fill text-3xl text-[#21759b]" />
               </div>
 
-              {/* Orbit 5: Shopify SVG */}
               <div 
                 className="absolute top-[-5%] right-[30%] w-14 h-14 bg-white dark:bg-white/5 backdrop-blur-md rounded-full shadow-xl border border-gray-100 dark:border-white/10 flex items-center justify-center z-30"
                 style={{ animation: 'float-medium 6.5s ease-in-out infinite' }}
@@ -193,7 +168,6 @@ export default function HeroSection() {
                 </svg>
               </div>
 
-              {/* Dotted connecting lines (SVG Background Graphic) */}
               <svg className="absolute inset-0 w-full h-full pointer-events-none z-0 opacity-40 dark:opacity-20 hidden sm:block" viewBox="0 0 450 450">
                 <circle cx="225" cy="225" r="140" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="4 8" className="text-gray-400 dark:text-gray-500 animate-[spin_60s_linear_infinite]" />
                 <circle cx="225" cy="225" r="190" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="4 8" className="text-gray-300 dark:text-gray-600 animate-[spin_80s_linear_infinite_reverse]" />

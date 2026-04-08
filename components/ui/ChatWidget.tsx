@@ -1,51 +1,27 @@
 'use client';
-/**
- * components/ui/ChatWidget.tsx — Floating AI Chat Widget
- *
- * Features:
- *  - Floating bottom-right button toggles the chat window
- *  - Messages array with role: 'user' | 'bot' — renders both sides
- *  - Calls /api/chat (the secure Gemini route handler) — API key stays server-side
- *  - Auto-scrolls to the latest message on every update
- *  - Animated open/close via Framer Motion (no layout shift)
- *  - Typing indicator (three bouncing dots) while the bot is thinking
- *  - Basic markdown: **bold** rendered inline; newlines converted to <br />
- *  - Full light + dark theme awareness via Tailwind tokens
- *  - Fully keyboard / screen-reader accessible (role="dialog", aria-*)
- *  - Error state shown as an inline bot message (no unhandled rejections)
- */
 
 import { useState, useRef, useEffect, useCallback, type KeyboardEvent } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
 type Role = 'user' | 'bot';
 
 interface Message {
   id: string;
   role: Role;
   text: string;
-  /** ISO timestamp */
   ts: string;
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 function uid() {
   return Math.random().toString(36).slice(2, 9);
 }
 
-/**
- * Super-light inline markdown renderer — only handles **bold** and line breaks.
- * For richer markdown, swap this for `react-markdown` later.
- */
 function renderText(text: string) {
-  // Split on **bold** markers
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
   return parts.map((part, i) => {
     if (part.startsWith('**') && part.endsWith('**')) {
       return <strong key={i}>{part.slice(2, -2)}</strong>;
     }
-    // Convert \n to <br />
     return part.split('\n').map((line, j, arr) => (
       <span key={`${i}-${j}`}>
         {line}
@@ -55,7 +31,6 @@ function renderText(text: string) {
   });
 }
 
-// ─── Subcomponents ────────────────────────────────────────────────────────────
 function TypingIndicator() {
   return (
     <div className="flex items-center gap-1 px-4 py-3 rounded-2xl rounded-bl-sm bg-gray-100 dark:bg-[#1e1e27] w-fit max-w-[80px]">
@@ -74,7 +49,6 @@ function MessageBubble({ msg }: { msg: Message }) {
   const isUser = msg.role === 'user';
   return (
     <div className={`flex items-end gap-2 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
-      {/* Avatar */}
       <div
         className={[
           'flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold mb-0.5',
@@ -87,7 +61,6 @@ function MessageBubble({ msg }: { msg: Message }) {
         {isUser ? 'U' : 'H'}
       </div>
 
-      {/* Bubble */}
       <div
         className={[
           'max-w-[78%] px-4 py-2.5 rounded-2xl text-sm font-sans leading-relaxed break-words',
@@ -105,7 +78,6 @@ function MessageBubble({ msg }: { msg: Message }) {
   );
 }
 
-// ─── Main Widget ──────────────────────────────────────────────────────────────
 const GREETING: Message = {
   id: 'greeting',
   role: 'bot',
@@ -124,17 +96,14 @@ export default function ChatWidget() {
   const inputRef   = useRef<HTMLInputElement>(null);
   const abortRef   = useRef<AbortController | null>(null);
 
-  // Auto-scroll to latest message
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  // Focus input when chat opens
   useEffect(() => {
     if (isOpen) setTimeout(() => inputRef.current?.focus(), 100);
   }, [isOpen]);
 
-  // Cancel in-flight request on unmount
   useEffect(() => {
     return () => abortRef.current?.abort();
   }, []);
@@ -150,7 +119,6 @@ export default function ChatWidget() {
     setMessages((prev) => [...prev, userMsg]);
     setIsLoading(true);
 
-    // Cancel any previous in-flight request
     abortRef.current?.abort();
     const ctrl = new AbortController();
     abortRef.current = ctrl;
@@ -209,7 +177,6 @@ export default function ChatWidget() {
 
   return (
     <>
-      {/* ── Chat Window ─────────────────────────────────────────────────── */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -225,10 +192,8 @@ export default function ChatWidget() {
           >
             <div className="flex flex-col rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.35)] border border-gray-200/70 dark:border-white/[0.08] bg-white dark:bg-[#1a1a22]">
 
-              {/* ── Header ──────────────────────────────────────────────── */}
               <div className="flex items-center justify-between px-4 py-3.5 bg-gradient-to-r from-[#62a92b] to-[#4e8a1e] dark:from-[#62a92b] dark:to-[#72d62a]">
                 <div className="flex items-center gap-2.5">
-                  {/* Online dot + avatar */}
                   <div className="relative">
                     <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white dark:text-[#1a1a22] font-bold text-sm">
                       H
@@ -246,7 +211,6 @@ export default function ChatWidget() {
                 </div>
 
                 <div className="flex items-center gap-1">
-                  {/* Clear chat */}
                   <button
                     onClick={clearChat}
                     className="p-1.5 rounded-lg text-white/70 dark:text-[#1a1a22]/70 hover:text-white dark:hover:text-[#1a1a22] hover:bg-white/10 transition-colors"
@@ -255,7 +219,6 @@ export default function ChatWidget() {
                   >
                     <i className="ri-delete-bin-line text-sm" />
                   </button>
-                  {/* Close */}
                   <button
                     onClick={() => setIsOpen(false)}
                     className="p-1.5 rounded-lg text-white/70 dark:text-[#1a1a22]/70 hover:text-white dark:hover:text-[#1a1a22] hover:bg-white/10 transition-colors"
@@ -266,7 +229,6 @@ export default function ChatWidget() {
                 </div>
               </div>
 
-              {/* ── Messages ────────────────────────────────────────────── */}
               <div
                 className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-3 max-h-80 scroll-smooth"
                 role="log"
@@ -277,7 +239,6 @@ export default function ChatWidget() {
                   <MessageBubble key={msg.id} msg={msg} />
                 ))}
 
-                {/* Typing indicator */}
                 {isLoading && (
                   <div className="flex items-end gap-2 flex-row">
                     <div className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold bg-gray-200 dark:bg-[#2a2a31] text-gray-600 dark:text-[#8f8f92]" aria-hidden="true">H</div>
@@ -285,7 +246,6 @@ export default function ChatWidget() {
                   </div>
                 )}
 
-                {/* Error state (visible to sighted users for debug) */}
                 {error && (
                   <p className="text-[10px] font-mono text-center text-red-400 dark:text-red-500 px-2">
                     {error}
@@ -295,7 +255,6 @@ export default function ChatWidget() {
                 <div ref={bottomRef} aria-hidden="true" />
               </div>
 
-              {/* ── Quick Prompts ────────────────────────────────────────── */}
               {messages.length === 1 && !isLoading && (
                 <div className="px-4 pb-2 flex flex-wrap gap-1.5">
                   {[
@@ -307,7 +266,6 @@ export default function ChatWidget() {
                       key={prompt}
                       onClick={() => {
                         setInput(prompt);
-                        // Send after state update
                         setTimeout(async () => {
                           setInput('');
                           setIsLoading(true);
@@ -343,7 +301,6 @@ export default function ChatWidget() {
                 </div>
               )}
 
-              {/* ── Input Row ───────────────────────────────────────────── */}
               <div className="px-3 pb-3 pt-2 border-t border-gray-100 dark:border-white/[0.05]">
                 <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 dark:bg-[#272730] border border-gray-200 dark:border-white/[0.08] focus-within:border-[#62a92b] dark:focus-within:border-[#62a92b] focus-within:ring-2 focus-within:ring-[#62a92b]/20 dark:focus-within:ring-[#62a92b]/20 transition-all duration-200">
                   <input
@@ -382,7 +339,6 @@ export default function ChatWidget() {
         )}
       </AnimatePresence>
 
-      {/* ── Toggle Button ────────────────────────────────────────────────── */}
       <button
         onClick={() => setIsOpen((v) => !v)}
         className={[
@@ -410,7 +366,6 @@ export default function ChatWidget() {
           </motion.span>
         </AnimatePresence>
 
-        {/* Unread pulse when chat is closed */}
         {!isOpen && (
           <span className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-white dark:bg-[#272730] flex items-center justify-center">
             <span className="w-2 h-2 rounded-full bg-[#62a92b] dark:bg-[#62a92b] animate-pulse" />
