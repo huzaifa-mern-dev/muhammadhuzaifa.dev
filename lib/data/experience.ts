@@ -19,7 +19,7 @@ export const experience: ExperienceEntry[] = [
     location: "Remote",
     highlights: [
       "Independently delivering full-stack web applications and API integrations for international clients.",
-      "Built custom WooCommerce stores (CarHub, Haven Hub) and deployed scalable Next.js apps.",
+      "Built custom Shopify and WooCommerce stores (CarHub, Haven Hub) and deployed scalable Full Stack apps.",
       "Maintained a 100% 5-star client satisfaction rating across all freelance engagements."
     ],
   },
