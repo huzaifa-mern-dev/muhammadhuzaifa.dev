@@ -10,49 +10,58 @@
 import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 
-const testimonials = [
+export const testimonials = [
   {
-    name: "Alex Sterling",
-    role: "Founder, Peak Performance",
+    name: "Eileen Parent",
+    role: "Founder & CEO, Access Navigation.org",
     platform: "Upwork",
     rating: 5,
-    text: "Huzaifa didn't just build a website; he completely re-architected our Shopify backend. Our load times dropped by 3 seconds, and conversions went up by 40%. The best investment we made this year."
+    text: "Quality Work & Absolute Integrity - Muhammad is the real deal. He set up our Shopify/Printify store with total precision. He solved every issue we threw at him and refused to cut corners on quality. Excellent communication, very fair pricing, and a deep understanding of our non-profit mission. We feel lucky to have found him! I’ll be a returning client for sure. Highly recommended for anyone who wants quality work from an honest person."
   },
   {
-    name: "Sarah Lin",
-    role: "CTO, SaaSFlow",
+    name: "Jazlynn H.",
+    role: "Founder, pickypadstherapy.com",
     platform: "Upwork",
     rating: 5,
-    text: "An exceptional MERN stack developer. We hired him on Upwork to migrate our legacy web app to Next.js. His code is spotless, and his communication is top-tier."
+    text: "Working with Muhammad was a fantastic experience from start to finish. He went above and beyond my expectations. What impressed me the most was his dedication and patience. He spent hours making sure every small detail looked perfect, and even after completing the main work, he continued to make adjustments until I was 100% satisfied. His communication was always clear, polite, and fast. It’s rare to find a freelancer who combines skill, professionalism, and genuine care for the project — but Muhammad is exactly that."
   },
   {
-    name: "Marcus Thorne",
-    role: "E-Commerce Director, Haven",
-    platform: "Fiverr",
-    rating: 5,
-    text: "He engineered a robust GraphQL API that seamlessly synced our inventory across three warehouses. Flawless execution and delivered ahead of schedule."
-  },
-  {
-    name: "Elena Rodriguez",
-    role: "Co-Founder, Artify",
-    platform: "Direct",
-    rating: 5,
-    text: "We needed a highly custom Framer Motion interface that didn't compromise performance. Huzaifa delivered an Awwwards-worthy experience that our users absolutely love. Truly a master of his craft."
-  },
-  {
-    name: "James Cavendish",
-    role: "Tech Lead, OmniRetail",
-    platform: "Direct",
-    rating: 5,
-    text: "Finding a developer who understands both complex backend architecture and pixel-perfect UI design is rare. Muhammad handled our entire full-stack migration flawlessly."
-  },
-  {
-    name: "David Chen",
-    role: "Director of Operations, Lumen",
+    name: "Marie",
+    role: "Founder, nebulaartistry.shop",
     platform: "Upwork",
     rating: 5,
-    text: "His ability to dive into a messy Next.js codebase, clean up the technical debt, and implement strict TypeScript standards was transformative for our engineering team."
+    text: "Muhammad was absolutely awesome to work with! He did a fantastic job redoing my Shopify store and everything looks polished, modern, and runs so smoothly now. He understood exactly what I wanted, communicated clearly throughout the process, and delivered the project on time. I really appreciate his professionalism and attention to detail. Highly recommend him to anyone looking for a skilled and reliable Shopify expert!"
+  },
+  {
+    name: "Kreshnik Veseli",
+    role: "Founder, parillis.ch",
+    platform: "Upwork", // Ya evidence ke hisaab se 'Direct' ya 'Fiverr' likh dein
+    rating: 5,
+    text: "Trustworthy, autonomous, and skilled in his field, Muhammed is the ideal freelancer to move my projects forward or for long-term hiring. He knows how to show understanding and unparalleled politeness."
+  },
+  {
+    name: "Ali Hassan",
+    role: "Client, California, United States",
+    platform: "Upwork", 
+    rating: 5,
+    text: "Had a great experience working with Huzaifa, very professional and delivered exactly what I needed. Would definitely work with him again."
+  },
+  {
+    name: "Kreshnik Veseli",
+    role: "Founder, neroli-studio.ch",
+    platform: "Upwork", 
+    rating: 5,
+    text: "Perfect. Muhammed listened and finished the job successfully." // Ek hi client ke 2 chote messages maine single solid review bananay ke liye merge kar diye evidence ke sath.
+  },
+  
+  {
+    name: "Ibrar Shabir",
+    role: "Client, California, United States",
+    platform: "Upwork",
+    rating: 5,
+    text: "Huzaifa did a great job on our Elementor landing page. He followed the requirements perfectly, created a clean and responsive design, and added a functional modal popup with conditional form logic. Communication was smooth and delivery was on time. Highly recommended!"
   }
+
 ];
 
 function SectionLabel() {

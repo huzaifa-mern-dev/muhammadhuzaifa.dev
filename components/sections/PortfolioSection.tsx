@@ -64,6 +64,7 @@ function ModalCarousel({ images, alt }: { images: string[], alt: string }) {
         src={images[index]}
         alt={`${alt} screenshot ${index + 1}`}
         fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         className="object-contain mx-auto"
         priority
       />
@@ -108,14 +109,16 @@ export default function PortfolioSection() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const swiperRef = useRef<SwiperType | null>(null);
 
-  const filterCategories = ["All", "E-commerce", "WordPress", "Custom Code"];
+  // 1. Data Extraction (Unique Categories)
+  const allCategories = [
+    "All",
+    ...Array.from(new Set(projects.flatMap((project) => project.categories || []).filter(Boolean)))
+  ];
 
+  // 3. Filtering Logic (Verification)
   const filteredProjects = projects.filter((p) => {
     if (activeTab === 'All') return true;
-    if (activeTab === 'WordPress') return p.technologies.includes('WordPress');
-    if (activeTab === 'E-commerce') return p.id === 'leatherstride' || p.description.toLowerCase().includes('ecommerce');
-    if (activeTab === 'Custom Code') return !p.technologies.includes('WordPress');
-    return true;
+    return p.categories?.includes(activeTab);
   });
 
   // Lock body scroll when modal is active
@@ -170,7 +173,7 @@ export default function PortfolioSection() {
 
         {/* ── Filter Tabs ─────────────────────────────────────────────────── */}
         <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
-          {filterCategories.map((category) => (
+          {allCategories.map((category) => (
             <button
               key={category}
               onClick={() => {
@@ -194,12 +197,15 @@ export default function PortfolioSection() {
         {/* ── Swiper Carousel ─────────────────────────────────────────────── */}
         <div className="relative portfolio-swiper-wrapper max-w-full overflow-visible">
           <Swiper
+            key={activeTab}
+            observer={true}
+            observeParents={true}
             onSwiper={(swiper) => { swiperRef.current = swiper; }}
             modules={[Autoplay, EffectCoverflow, Navigation, Pagination, Keyboard]}
             effect="coverflow"
             grabCursor
             centeredSlides
-            loop
+            loop={filteredProjects.length >= 4}
             keyboard={{ enabled: true }}
             coverflowEffect={{
               rotate: 0,
@@ -228,12 +234,12 @@ export default function PortfolioSection() {
                 {({ isActive }) => (
                   <article
                     className={[
-                      'group relative rounded-3xl overflow-hidden border cursor-pointer select-none',
+                      'group relative rounded-3xl border cursor-pointer select-none',
                       'bg-white dark:bg-[#272730]',
                       'border-gray-200 dark:border-white/5',
                       'shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none',
-                      'transition-all duration-500 ease-out',
-                      'hover:border-primary-2/50 dark:hover:border-primary-2/40 hover:shadow-[0_8px_40px_rgba(98,169,43,0.15)]',
+                      'transition-transform duration-500 ease-out',
+                      'hover:border-primary-2/50 dark:hover:border-primary-2/40',
                       isActive
                         ? 'scale-100 opacity-100'
                         : 'scale-[0.92] opacity-50 grayscale-[30%]',
@@ -249,52 +255,61 @@ export default function PortfolioSection() {
                       }
                     }}
                   >
-                    {/* ── Card Image Header ───────────────────────────────── */}
-                    <div className="relative w-full aspect-[16/11] overflow-hidden bg-gray-100 dark:bg-black/20">
-                      <Image
-                        src={project.image}
-                        alt={`${project.title} screenshot`}
-                        fill
-                        sizes="(max-width: 640px) 95vw, (max-width: 1024px) 60vw, 40vw"
-                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                        priority={i < 3}
-                      />
+                    {/* ── GPU-Accelerated Shadow Layer ── */}
+                    <div 
+                      className="absolute inset-0 rounded-3xl shadow-[0_8px_40px_rgba(98,169,43,0.15)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out z-0 pointer-events-none"
+                      aria-hidden="true"
+                    />
 
-                      {/* Hover Overlay indicating click action */}
-                      <div className="absolute inset-0 bg-primary-2/90 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-primary-2 shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-                          <i className="ri-add-line text-3xl font-bold" />
-                        </div>
-                        <span className="text-white font-sans font-bold mt-4 tracking-wide uppercase text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-100">
-                          View Details
-                        </span>
-                      </div>
-                    </div>
+                    {/* ── Content Wrapper to maintain z-index above shadow ── */}
+                    <div className="relative z-10 w-full h-full flex flex-col rounded-3xl overflow-hidden">
+                      {/* ── Card Image Header ───────────────────────────────── */}
+                      <div className="relative w-full aspect-[16/11] overflow-hidden bg-gray-100 dark:bg-black/20">
+                        <Image
+                          src={project.image}
+                          alt={`${project.title} screenshot`}
+                          fill
+                          sizes="(max-width: 640px) 95vw, (max-width: 1024px) 60vw, 40vw"
+                          className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                          priority={i < 3}
+                        />
 
-                    {/* ── Card Body ───────────────────────────────────────── */}
-                    <div className="p-6 lg:p-8 text-left bg-white dark:bg-[#272730] relative z-10">
-                      <div className="mb-4">
-                        <h3 className="font-sans font-bold text-gray-900 dark:text-white text-xl md:text-2xl leading-tight">
-                          {project.title}
-                        </h3>
-                        {project.subtitle && (
-                          <span className="block text-sm font-semibold font-sans text-primary-2 mt-1">
-                            {project.subtitle}
+                        {/* Hover Overlay indicating click action */}
+                        <div className="absolute inset-0 bg-primary-2/90 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-primary-2 shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+                            <i className="ri-add-line text-3xl font-bold" />
+                          </div>
+                          <span className="text-white font-sans font-bold mt-4 tracking-wide uppercase text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-100">
+                            View Details
                           </span>
-                        )}
+                        </div>
                       </div>
 
-                      <p className="text-base font-sans font-normal text-gray-500 dark:text-gray-400 mb-6 line-clamp-2">
-                        {project.description}
-                      </p>
+                      {/* ── Card Body ───────────────────────────────────────── */}
+                      <div className="p-6 lg:p-8 text-left bg-white dark:bg-[#272730] relative z-10 flex-grow">
+                        <div className="mb-4">
+                          <h3 className="font-sans font-bold text-gray-900 dark:text-white text-xl md:text-2xl leading-tight">
+                            {project.title}
+                          </h3>
+                          {project.subtitle && (
+                            <span className="block text-sm font-semibold font-sans text-primary-2 mt-1">
+                              {project.subtitle}
+                            </span>
+                          )}
+                        </div>
 
-                      <div className="flex flex-wrap gap-2 border-t border-gray-100 dark:border-white/5 pt-4">
-                        {project.technologies.slice(0, 3).map((tech) => (
-                          <TechTag key={tech} label={tech} />
-                        ))}
-                        {project.technologies.length > 3 && (
-                          <TechTag label={`+${project.technologies.length - 3}`} />
-                        )}
+                        <p className="text-base font-sans font-normal text-gray-500 dark:text-gray-400 mb-6 line-clamp-2">
+                          {project.description}
+                        </p>
+
+                        <div className="flex flex-wrap gap-2 border-t border-gray-100 dark:border-white/5 pt-4">
+                          {project.technologies.slice(0, 3).map((tech) => (
+                            <TechTag key={tech} label={tech} />
+                          ))}
+                          {project.technologies.length > 3 && (
+                            <TechTag label={`+${project.technologies.length - 3}`} />
+                          )}
+                        </div>
                       </div>
                     </div>
                   </article>
