@@ -33,7 +33,7 @@ export async function submitContactForm(
 
   try {
     const { error } = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>',
+      from: 'muhammadhuzaifa.dev <onboarding@resend.dev>',
       to: process.env.CONTACT_EMAIL || 'mhuzaifa3737@gmail.com',
       subject: `New Contact Request: ${formData.subject}`,
       html: `
