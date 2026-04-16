@@ -104,11 +104,9 @@ export default function Footer() {
 
       <div className="border-t border-gray-200 dark:border-white/10 mt-20 pt-8 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
         <p className="text-xs md:text-sm font-sans text-gray-500 font-medium">
-          © {new Date().getFullYear()} Muhammad Huzaifa. Local time in Pakistan: Pakistan Standard Time (PKT).
+          © {new Date().getFullYear()} Muhammad Huzaifa.
         </p>
-        <p className="text-xs md:text-sm font-sans text-gray-500 font-medium">
-          Crafted with Next.js &amp; Tailwind CSS.
-        </p>
+        
       </div>
       
     </footer>

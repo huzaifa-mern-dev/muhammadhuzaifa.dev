@@ -49,20 +49,19 @@ const satoshi = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: "Muhammad Huzaifa — Full Stack Developer",
+    default: "Muhammad Huzaifa | Senior Technical Architect & MERN Developer",
     template: "%s | Muhammad Huzaifa",
   },
   description:
-    "Portfolio of Muhammad Huzaifa — Full Stack Developer specialising in React, Next.js, Node.js, WordPress, and MongoDB. Open to freelance projects.",
+    "Senior Technical Architect & Full-Stack Developer specializing in high-performance e-commerce solutions, sub-second web architectures, and conversion rate optimization.",
+  applicationName: "Huzaifa Portfolio",
   keywords: [
-    "Full Stack Developer",
-    "React Developer",
-    "Next.js Developer",
-    "WordPress Developer",
-    "MERN Stack",
-    "Muhammad Huzaifa",
-    "Karachi",
-    "Pakistan",
+    "Next.js Architect",
+    "MERN Stack Developer",
+    "High-performance E-commerce Solutions",
+    "Sub-second Web Architectures",
+    "Conversion Rate Optimization",
+    "Senior Technical Architect",
   ],
   authors: [{ name: "Muhammad Huzaifa", url: "https://muhammadhuzaifa.dev" }],
   creator: "Muhammad Huzaifa",
@@ -70,16 +69,16 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://muhammadhuzaifa.dev",
-    title: "Muhammad Huzaifa — Full Stack Developer",
+    title: "Muhammad Huzaifa | Senior Technical Architect",
     description:
-      "Full Stack Developer specialising in React, Next.js, Node.js, WordPress & MongoDB.",
-    siteName: "Huzaifa.dev",
+      "Senior Technical Architect & Full-Stack Developer specializing in high-performance e-commerce solutions, sub-second web architectures, and conversion rate optimization.",
+    siteName: "Muhammad Huzaifa",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Muhammad Huzaifa — Full Stack Developer",
+    title: "Muhammad Huzaifa | Senior Technical Architect",
     description:
-      "Full Stack Developer specialising in React, Next.js, Node.js, WordPress & MongoDB.",
+      "Senior Technical Architect & Full-Stack Developer specializing in high-performance e-commerce solutions, sub-second web architectures, and conversion rate optimization.",
     creator: "@huzaifa_dev",
   },
   robots: {
@@ -109,6 +108,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Muhammad Huzaifa",
+    jobTitle: "Senior Technical Architect",
+    url: "https://muhammadhuzaifa.dev",
+    knownFor: [
+      "E-commerce Architectures",
+      "MERN Stack",
+      "High-performance Web Solutions",
+      "Conversion Rate Optimization"
+    ]
+  };
+
   return (
     <html
       lang="en"
@@ -129,6 +142,10 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
           <Preloader />
           <Navbar />
           {children}
