@@ -5,6 +5,13 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 
 export const testimonials = [
   {
+    name: "Petya Defova",
+    role: "Owner of Skin Sanctuary",
+    platform: "Upwork",
+    rating: 5,
+    text: "Had an amazing experience working with Muhammad! He was so patient and did everything i needed."
+  },
+  {
     name: "Eileen Parent",
     role: "Founder & CEO, Access Navigation.org",
     platform: "Upwork",

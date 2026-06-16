@@ -16,6 +16,236 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "airis-dynamics",
+    categories: ["Full-Stack & SaaS"],
+    title: "Airis Dynamics",
+    subtitle: "Corporate AI Platform",
+    description: "Next.js based corporate AI platform with reusable component architecture and strict technical SEO.",
+    fullDescription: "A high-performance corporate AI platform built with Next.js. Engineered with a scalable, reusable component architecture, focusing on seamless server-side rendering, optimized data fetching, and strict technical SEO to ensure peak performance and fast indexing.",
+    features: [
+      "Next.js Server-Side Rendering",
+      "Scalable Component Architecture",
+      "Technical SEO & Performance Optimization",
+      "Dynamic AI Solution Showcase"
+    ],
+    technologies: ["Next.js", "React", "TypeScript", "TailwindCSS", "Framer Motion"],
+    image: "/imgs/home-page-2/projects/15.png",
+    images: [
+      "/imgs/home-page-2/projects/15.png",
+    ],
+    liveUrl: "https://airisdynamics.com/",
+  },
+  {
+    id: "bincot-landing-page",
+    categories: ["Landing Page", "Next.js"],
+    title: "Bincot Consulting",
+    subtitle: "Strategic Landing Page",
+    description: "Next.js landing page for consulting services with integrated Calendly scheduling.",
+    fullDescription: "A high-converting landing page built with Next.js, specifically designed for strategic consulting services. It features a clean, professional layout with a seamless Calendly popup integration, allowing clients to book consultations directly on-site while maintaining a fast, responsive user experience.",
+    features: [
+      "Calendly Popup Integration",
+      "Next.js High-Performance Build",
+      "Service & Case Study Showcase",
+      "Mobile-First Responsive Design"
+    ],
+    technologies: ["Next.js", "React", "TailwindCSS", "Calendly"],
+    image: "/imgs/home-page-2/projects/16.png",
+    images: [
+      "/imgs/home-page-2/projects/16.png",
+    ],
+    githubUrl: "https://github.com/huzaifa-mern-dev/bincot",
+    liveUrl: "https://bincot.vercel.app/",
+  },
+  {
+    id: "meridian-immigration",
+    categories: ["Landing Page", "Next.js"],
+    title: "Meridian Law",
+    subtitle: "Immigration Legal Services",
+    description: "Next.js landing page for a law firm featuring service showcases and booking flows.",
+    fullDescription: "A professional, high-authority landing page built with Next.js for a global immigration law firm. The site is optimized for conversion, featuring detailed service cards, client success metrics, and a clean, trust-building UI that highlights expertise and compassionate legal representation.",
+    features: [
+      "Dynamic Service & Practice Area Cards",
+      "Conversion-Optimized Booking CTA",
+      "Trust-Building Success Metrics Section",
+      "Fully Responsive Professional Layout"
+    ],
+    technologies: ["Next.js", "React", "TailwindCSS", "Framer Motion"],
+    image: "/imgs/home-page-2/projects/17.png",
+    images: [
+      "/imgs/home-page-2/projects/17.png",
+    ],
+    githubUrl: "https://github.com/huzaifa-mern-dev/immigration-firm-website",
+    liveUrl: "https://meridian-law-2004.vercel.app/"
+  },
+  {
+    id: "picky-pads-therapy",
+    categories: ["Shopify", "E-commerce"],
+    title: "Picky Pads Therapy",
+    subtitle: "Shopify Store Redesign",
+    description: "Full store redesign focusing on visual aesthetics and improved product browsing experience.",
+    fullDescription: "A complete Shopify store redesign for a specialized handmade therapy brand. The project involved a full visual overhaul to match the brand's unique identity, optimizing the product catalog for better user engagement, and ensuring a seamless, mobile-responsive shopping experience for sensory-focused products.",
+    features: [
+      "Custom Store Redesign & Branding",
+      "Optimized Product Catalog & Collection Pages",
+      "Mobile-Responsive User Experience",
+      "Enhanced Navigation for Therapy Products"
+    ],
+    technologies: ["Shopify", "Liquid", "CSS", "JavaScript"],
+    image: "/imgs/home-page-2/projects/18.png",
+    images: [
+      "/imgs/home-page-2/projects/18.png",
+    ],
+    liveUrl: "https://pickypadstherapy.com/",
+  },
+  {
+    id: "nebula-artistry",
+    categories: ["Shopify", "E-commerce"],
+    title: "Nebula Artistry",
+    subtitle: "Shopify Store Redesign",
+    description: "Creative store redesign featuring a custom space-themed aesthetic for a niche craft brand.",
+    fullDescription: "A comprehensive Shopify store redesign for Nebula Artistry. The project focused on creating a vibrant, space-themed visual identity that complements the brand's unique 'sparkle putty' products. I implemented custom liquid templates and optimized the product gallery to enhance visual appeal and improve the mobile shopping journey.",
+    features: [
+      "Custom Space-Themed Visual Branding",
+      "Optimized Product Gallery & Featured Sections",
+      "Mobile-First Shopping Experience",
+      "Enhanced Performance for Creative Assets"
+    ],
+    technologies: ["Shopify", "Liquid", "CSS", "JavaScript"],
+    image: "/imgs/home-page-2/projects/19.png",
+    images: [
+      "/imgs/home-page-2/projects/19.png",
+    ],
+    liveUrl: "https://nebulaartistry.shop/",
+  },
+  {
+    id: "nutrifeel",
+    categories: ["Shopify", "E-commerce"],
+    title: "Nutrifeel",
+    subtitle: "Premium Supplement Store",
+    description: "Shopify redesign focused on high-end branding, SEO optimization, and performance engineering.",
+    fullDescription: "A sophisticated redesign of the Nutrifeel Shopify store, catering to premium Swiss-made supplements. The project involved an extensive focus on performance optimization to ensure fast load times, and a comprehensive SEO strategy to improve visibility. The final result is a clean, conversion-focused UI that effectively showcases product categories and reinforces brand authority.",
+    features: [
+      "Premium Design & Branding Overhaul",
+      "Core Web Vitals & Performance Optimization",
+      "Advanced On-Page SEO Strategy",
+      "Category-Driven Product Discovery UI"
+    ],
+    technologies: ["Shopify", "Liquid", "JavaScript", "Advanced SEO Tools"],
+    image: "/imgs/home-page-2/projects/20.png",
+    images: [
+      "/imgs/home-page-2/projects/20.png",
+    ],
+    liveUrl: "https://nutrifeel.ch/",
+  },
+  {
+    id: "lagenda-perfumes",
+    categories: ["Shopify", "E-commerce"],
+    title: "L'Agenda Perfumes",
+    subtitle: "Luxury Fragrance Store",
+    description: "High-end Shopify store redesign featuring luxury aesthetics and cinematic product presentation.",
+    fullDescription: "A sophisticated e-commerce platform for L'Agenda Perfumes. The redesign focused on a dark, premium aesthetic to evoke luxury. We implemented custom, high-impact imagery for product showcases, a countdown-driven 'Fragrance House' story section, and a conversion-optimized layout to reflect the precision and quality of the brand's scent collection.",
+    features: [
+      "Luxury Dark-Mode Aesthetics",
+      "Cinematic Product Photography Integration",
+      "Interactive Countdown-Driven Storytelling",
+      "Premium User Experience & Navigation"
+    ],
+    technologies: ["Shopify", "Liquid", "CSS", "JavaScript"],
+    image: "/imgs/home-page-2/projects/21.png",
+    images: [
+      "/imgs/home-page-2/projects/21.png",
+    ],
+    liveUrl: "https://www.parillis.ch/",
+  },
+  {
+    id: "access-navigation",
+    categories: ["Shopify", "E-commerce"],
+    title: "Access Navigation",
+    subtitle: "Community-Led POD Store",
+    description: "Shopify store with a custom 4-round user flow integration for Print-on-Demand products.",
+    fullDescription: "A purpose-driven Shopify store integrated with Printify for seamless print-on-demand operations. The project featured a highly customized navigation experience, incorporating a 4-step user journey flow to guide visitors through product selection, customization, and purchase, effectively supporting community-led initiatives through every sale.",
+    features: [
+      "Custom 4-Round Product Selection Flow",
+      "Printify POD Integration",
+      "Purpose-Driven Branding & Storytelling",
+      "Optimized UX for Community Initiatives"
+    ],
+    technologies: ["Shopify", "Printify API", "Liquid", "JavaScript"],
+    image: "/imgs/home-page-2/projects/22.png",
+    images: [
+      "/imgs/home-page-2/projects/22.png",
+    ],
+    liveUrl: "https://accessnavigation.myshopify.com/",
+  },
+  {
+    id: "skin-sanctuary",
+    categories: ["WordPress", "Shopify"],
+    title: "Skin Sanctuary",
+    subtitle: "Aesthetic Clinic Platform",
+    description: "WordPress clinic website with custom-coded Shopify store integration.",
+    fullDescription: "A comprehensive aesthetic clinic website built on WordPress. The project featured a custom-coded integration of Shopify products using a plugin, where the UI was manually styled and tailored to ensure a cohesive look and feel with the main clinic website, along with custom promotional popups to maximize conversions.",
+    features: [
+      "Custom-Coded Shopify Storefront UI",
+      "Shopify Plugin Integration for WordPress",
+      "Promotional Popup Implementation",
+      "Premium Aesthetic Clinic Branding"
+    ],
+    technologies: ["WordPress", "Shopify", "PHP", "JavaScript", "CSS"],
+    image: "/imgs/home-page-2/projects/23.png",
+    images: [
+      "/imgs/home-page-2/projects/23.png",
+    ],
+    liveUrl: "https://skinsanctuarystl.com/",
+  },
+
+
+  {
+    id: "doodle-mint-studios",
+    categories: ["WordPress", "Landing Page"],
+    title: "Doodle Mint Studios",
+    subtitle: "Motion Design Agency",
+    description: "WordPress website built for a motion design agency, showcasing vibrant animation services.",
+    fullDescription: "A creative, high-energy WordPress website designed for Doodle Mint Studios. The site focuses on visual storytelling to showcase their motion design and illustration capabilities. It features a clean, professional layout that integrates portfolio galleries, client testimonials, and a streamlined 'Get a Quote' flow to drive conversions for the agency.",
+    features: [
+      "Vibrant Motion Design Showcase",
+      "Streamlined 'Get a Quote' Conversion Flow",
+      "Portfolio & Client Trust Sections",
+      "Responsive & Performance-Optimized WordPress Design"
+    ],
+    technologies: ["WordPress", "PHP", "JavaScript", "CSS"],
+    image: "/imgs/home-page-2/projects/24.png",
+    images: [
+      "/imgs/home-page-2/projects/24.png",
+    ],
+    liveUrl: "https://doodlemintstudios.com/",
+  },
+
+  {
+    id: "rise-up-landing",
+    categories: ["Wix", "Landing Page"],
+    title: "Rise Up",
+    subtitle: "Movement Landing Page",
+    description: "High-converting Wix landing page optimized for paid ad traffic.",
+    fullDescription: "A focused, high-converting landing page built on Wix, specifically designed to capture traffic from paid advertising campaigns. The page features a minimalist, clean aesthetic with a prominent video introduction to quickly convey the brand's message, establishing a connection with the target audience and driving user action.",
+    features: [
+      "Optimized for Paid Ad Campaigns",
+      "Video-Centric Hero Section",
+      "Conversion-Focused Minimalist Layout",
+      "Brand-Aligned Messaging for Men's Community"
+    ],
+    technologies: ["Wix", "Video Integration"],
+    image: "/imgs/home-page-2/projects/25.png",
+    images: [
+      "/imgs/home-page-2/projects/25.png",
+    ],
+    liveUrl: "https://www.libertycoaching.eu/rise-up",
+  },
+
+
+
+
+
+  {
     id: "task-manager",
     categories: ["Full-Stack & SaaS"],
     title: "Task Management System",
